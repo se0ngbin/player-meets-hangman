@@ -1,4 +1,4 @@
 guide on how to access sql database: https://itsourcecode.com/free-projects/php-project/user-profile-update-profile-info-using-phpmysql/
 
 
-NOTE: if anyone has an alternative to sql that they would rather use make a pull request or smth
+NOTE: if anyone has an alternative to sql that they would rather use make a pull request or smth.
