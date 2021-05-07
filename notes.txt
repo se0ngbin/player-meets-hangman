@@ -4,3 +4,9 @@ the guide I followed to set all of this up (plz read this): https://www.freecode
 If something doesn't work plz make sure you have all required node modules installed on your computer
 
 NOTE: if anyone has an alternative to sql that they would rather use make a pull request or smth.
+
+
+useful links: 
+https://javascript.info/intro
+https://reactjs.org/docs/introducing-jsx.html
+
