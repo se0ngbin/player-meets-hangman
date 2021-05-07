@@ -1,4 +1,4 @@
 guide on how to access sql database: https://itsourcecode.com/free-projects/php-project/user-profile-update-profile-info-using-phpmysql/
-
+the guide I followed to set all of this up (plz read this): https://www.freecodecamp.org/news/how-to-create-a-react-app-with-a-node-backend-the-complete-guide/
 
 NOTE: if anyone has an alternative to sql that they would rather use make a pull request or smth.
