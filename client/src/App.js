@@ -1,39 +1,39 @@
-import React from "react";
-import { withRouter } from "react-router";
+import React, { Component } from 'react';
 import './App.css';
+import axios from 'axios'
+import { withRouter } from "react-router";
 import { BrowserRouter as Router, Route, Switch, Link, Redirect } from "react-router-dom";
 import Homepage from "./pages/Homepage";
 import Login from "./pages/Login";
 import CreateAccount from "./pages/CreateAccount";
 
-const App = () => {
-  const [data, setData] = React.useState(null);
+class App extends Component {
+  state = {
+    response: {}
+  };
 
-  React.useEffect(() => {
-    fetch("/api")
-      .then((res) => res.json())
-      .then((data) => setData(data.message));
-  }, []);
+  componentDidMount() {
+    axios.get('/api/v1/say-something').then((res) => {
+      const response = res.data;
+      this.setState({ response });
+    });
+  }
 
-
-  return (
-    <Router>
-      <Switch>
-        <Route exact path="/" component={Homepage}/>
-        <Route exact path="/login" component={Login}/>
-        <Route exact path="/createaccount" component={CreateAccount}/>
-      </Switch>
-    </Router>
-  )
-
-  // return (
-  //   <div className="App">
-  //     <header className="App-header">
-  //       <img src={logo} className="App-logo" alt="logo" />
-  //       <p>{!data ? "Loading..." : data}</p>
-  //     </header>
-  //   </div>
-  // );
+  render() {
+    return (
+      <div className="App">
+        <Router>
+          <Switch>
+            <Route exact path="/" component={Homepage} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/createaccount" component={CreateAccount} />
+          </Switch>
+        </Router>  
+        <h1>Hello from the frontend!</h1>
+        <h1>{this.state.response.body}</h1>
+      </div>
+    );
+  }
 }
 
 export default App;
