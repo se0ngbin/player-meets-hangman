@@ -9,8 +9,8 @@ DROP TABLE IF EXISTS "MakeOrBreakPossibleAnswer";
 DROP TABLE IF EXISTS "MakeOrBreakQuestion";
 DROP TABLE IF EXISTS "Photo";
 DROP TABLE IF EXISTS "UserInterest";
-DROP TABLE IF EXISTS "LoginInfo";
 DROP TABLE IF EXISTS "User";
+DROP TABLE IF EXISTS "LoginInfo";
 DROP TABLE IF EXISTS "Gender";
 DROP TABLE IF EXISTS "Interest";
 
@@ -25,22 +25,22 @@ create table "Interest" (
     name VARCHAR(100) NOT NULL
 );
 
-create table "User" (
+create table "LoginInfo" (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    username TEXT UNIQUE NOT NULL,
+    passwordHash TEXT NOT NULL
+);
+
+create table "User" (
+    id UUID PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     birthdate DATE NOT NULL,
     bio TEXT,
     gender INTEGER REFERENCES "Gender"(id),    
     gendersInterestedIn SMALLINT, -- bitmap to genders
-    contactInfo TEXT
-);
+    contactInfo TEXT,
 
-create table "LoginInfo" (
-    id UUID PRIMARY KEY,
-    username TEXT NOT NULL,
-    passwordHash TEXT,
-
-    FOREIGN KEY(id) references "User"(id)
+    FOREIGN KEY(id) references "LoginInfo"(id)
 );
 
 create table "UserInterest" (
