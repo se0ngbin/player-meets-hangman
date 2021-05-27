@@ -27,8 +27,8 @@ create table "Interest" (
 
 create table "LoginInfo" (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    username TEXT UNIQUE NOT NULL,
-    passwordHash TEXT NOT NULL
+    username TEXT UNIQUE NOT NULL CHECK(coalesce(TRIM(username), '') <> ''),
+    passwordHash TEXT NOT NULL CHECK(coalesce(TRIM(passwordHash), '') <> '')
 );
 
 create table "User" (

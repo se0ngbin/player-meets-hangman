@@ -20,7 +20,7 @@ function requireProperties(obj, props) {
 async function getLogin(username) {
     const query = {
         name: 'get-login-by-username',
-        text: 'SELECT * from LoginInfo WHERE username = $1',
+        text: 'SELECT * from "LoginInfo" WHERE username = $1',
         values: [username]
     };
 
@@ -43,8 +43,11 @@ export const createLogin = asyncHandler(async (req, res) => {
         values: [username, pwhash]
     };
 
+    await pgPool.query(query)
+    const user = await getLogin(username);
+
     res.status(200).json({
-        response: await pgPool.query(query)
+        id : user.rows[0].id
     });
 });
 
@@ -53,7 +56,7 @@ export const login = asyncHandler(async (req, res) => {
 
     const { username, password } = req.body;
 
-    const user = getLogin(username);
+    const user = await getLogin(username);
     // todo 
 
     res.status(200).json(user);

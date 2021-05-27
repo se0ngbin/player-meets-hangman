@@ -23,9 +23,6 @@ body:
 returns:
 
     {
-        status: int,
-
-        // in case of status OK
         id: UUID
     }
 
