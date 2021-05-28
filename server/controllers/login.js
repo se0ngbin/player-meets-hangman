@@ -3,7 +3,11 @@ import asyncHandler from 'express-async-handler';
 import bcrypt from 'bcrypt';
 import createError from 'http-errors';
 import pg from 'pg';
+import jwt from 'jsonwebtoken'
+
+import { StatusCodes } from 'http-status-codes';
 import { connectionString, saltRounds } from '../constants.js';
+import { jwtKey } from '../secret.js';
 
 const router = express.Router();
 const pgPool = new pg.Pool({ connectionString });
@@ -13,10 +17,12 @@ const pgPool = new pg.Pool({ connectionString });
 function requireProperties(obj, props) {
     for (let prop of props) {
         if (! obj.hasOwnProperty(prop)) 
-            throw createError(400, `Missing required property '${prop}'`);
+            throw createError(StatusCodes.BAD_REQUEST, `Missing required property '${prop}'`);
     }
 }
 
+// returns a user login object or null
+//
 async function getLogin(username) {
     const query = {
         name: 'get-login-by-username',
@@ -24,15 +30,14 @@ async function getLogin(username) {
         values: [username]
     };
 
-    return await pgPool.query(query);
+    let user = await pgPool.query(query);
+    return user.rowCount == 1 ? user.rows[0] : null;
 }
 
 // public functions
 
 export const createLogin = asyncHandler(async (req, res) => {
     requireProperties(req.body, ['username', 'password']);
-
-    // check so user is not in database already
 
     const { username, password } = req.body;
     const pwhash = await bcrypt.hash(password, saltRounds);
@@ -46,8 +51,10 @@ export const createLogin = asyncHandler(async (req, res) => {
     await pgPool.query(query)
     const user = await getLogin(username);
 
+    // TODO create user along with login with the same id, even if it's empty
+
     res.status(200).json({
-        id : user.rows[0].id
+        id : user.id
     });
 });
 
@@ -57,9 +64,15 @@ export const login = asyncHandler(async (req, res) => {
     const { username, password } = req.body;
 
     const user = await getLogin(username);
-    // todo 
+    if (! user) throw createError(StatusCodes.NOT_FOUND, `User '${username}' does not exist`);
 
-    res.status(200).json(user);
+    const authorized = await bcrypt.compare(password, user.passwordhash);
+    if (! authorized) throw createError(StatusCodes.UNAUTHORIZED, `Invalid password, don't ever try again`);
+
+
+    res.status(200).json({
+        accessToken : jwt.sign({ username }, jwtKey, { expiresIn : '1d' })
+    });
 });
 
 export default router;
