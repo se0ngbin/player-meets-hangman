@@ -7,7 +7,11 @@ schema
 To connect to the db change the connectionString with your credentials in
 constants.js
 
-Change the jwtKey in secret.js
+Add secret.js with 
+
+    export const jwtKey = "some-secret-key";
+
+Change the jwtKey in secret.js so it's secure.
 
 # API routes
 
