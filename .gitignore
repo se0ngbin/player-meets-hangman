@@ -119,3 +119,4 @@ dist
 
 # custom stuff
 
+server/secret.js
