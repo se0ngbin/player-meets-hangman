@@ -19,8 +19,22 @@ END;
 $BODY$ 
 LANGUAGE plpgsql VOLATILE;
 
---  add interests and questions here in the format provided
+--  add genders, interests and questions here in the format provided
+
+-- genders --
+
+insert into "Gender" (name) values ('Male');
+insert into "Gender" (name) values ('Female');
+insert into "Gender" (name) values ('M2F Transsexual');
+insert into "Gender" (name) values ('F2M Transsexual');
+insert into "Gender" (name) values ('Non-binary');
+insert into "Gender" (name) values ('Not applicable');
+
+-- interests -- 
 
 insert into "Interest" (name) values ('sex');
+insert into "Interest" (name) values ('more sex');
+
+-- make or break questions --
 
 select new_question('do you like i scream?', array['yes', 'no', 'i scream too']);
