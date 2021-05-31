@@ -6,6 +6,9 @@ import UserIcon from '../assets/user_icon.png';
 import "./Homepage.css"
 import Girl1 from '../assets/girl1.jpeg';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import CrossIcon from '../assets/cross_icon.png';
+import HeartIcon from '../assets/heart_icon.png';
+
 
 
 class Homepage extends Component {
@@ -25,7 +28,13 @@ class Homepage extends Component {
                     <div className="behindLayer1">
                     </div>
                     <div className="card">
-                            <img src={Girl1}></img>
+                            <img className="userPhoto" src={Girl1} />
+                            <div className="buttons dislikeButton">
+                                <img src={CrossIcon} height="40%" className="icons"></img>
+                            </div>
+                            <div className="buttons likeButton">
+                                <img src={HeartIcon} height="50%" className="icons"></img>
+                            </div>
                         </div>
                     <div className="userInfo">
                         <div className="title">{userName}, {userAge}</div>
