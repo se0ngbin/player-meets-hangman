@@ -23,12 +23,12 @@ LANGUAGE plpgsql VOLATILE;
 
 -- genders --
 
-insert into "Gender" (name) values ('Male');
-insert into "Gender" (name) values ('Female');
-insert into "Gender" (name) values ('M2F Transsexual');
-insert into "Gender" (name) values ('F2M Transsexual');
-insert into "Gender" (name) values ('Non-binary');
-insert into "Gender" (name) values ('Not applicable');
+insert into "Gender" (id, name) values (0, 'Male');
+insert into "Gender" (id, name) values (1, 'Female');
+insert into "Gender" (id, name) values (2, 'M2F Transsexual');
+insert into "Gender" (id, name) values (3, 'F2M Transsexual');
+insert into "Gender" (id, name) values (4, 'Non-binary');
+insert into "Gender" (id, name) values (5, 'Not applicable');
 
 -- interests -- 
 

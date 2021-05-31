@@ -1,4 +1,3 @@
-import express from 'express';
 import asyncHandler from 'express-async-handler';
 import bcrypt from 'bcrypt';
 import createError from 'http-errors';
@@ -8,18 +7,9 @@ import jwt from 'jsonwebtoken'
 import { StatusCodes } from 'http-status-codes';
 import { connectionString, saltRounds } from '../constants.js';
 import { jwtKey } from '../secret.js';
+import { requireProperties } from '../utils.js';
 
-const router = express.Router();
 const pgPool = new pg.Pool({ connectionString });
-
-// internal functions
-
-function requireProperties(obj, props) {
-    for (let prop of props) {
-        if (! obj.hasOwnProperty(prop)) 
-            throw createError(StatusCodes.BAD_REQUEST, `Missing required property '${prop}'`);
-    }
-}
 
 // returns a user login object or null
 //
@@ -93,5 +83,3 @@ export const login = asyncHandler(async (req, res) => {
         accessToken : jwt.sign({ username, userid }, jwtKey, { expiresIn : '1d' })
     });
 });
-
-export default router;

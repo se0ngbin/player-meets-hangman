@@ -16,7 +16,7 @@ DROP TABLE IF EXISTS "Interest";
 
 
 create table "Gender" (
-    id SMALLSERIAL PRIMARY KEY,
+    id INTEGER PRIMARY KEY,
     name VARCHAR(100) NOT NULL
 );
 
