@@ -1,4 +1,3 @@
-import express from 'express';
 import asyncHandler from 'express-async-handler';
 import bcrypt from 'bcrypt';
 import createError from 'http-errors';
@@ -8,18 +7,9 @@ import jwt from 'jsonwebtoken'
 import { StatusCodes } from 'http-status-codes';
 import { connectionString, saltRounds } from '../constants.js';
 import { jwtKey } from '../secret.js';
+import { requireProperties } from '../utils.js';
 
-const router = express.Router();
 const pgPool = new pg.Pool({ connectionString });
-
-// internal functions
-
-function requireProperties(obj, props) {
-    for (let prop of props) {
-        if (! obj.hasOwnProperty(prop)) 
-            throw createError(StatusCodes.BAD_REQUEST, `Missing required property '${prop}'`);
-    }
-}
 
 // returns a user login object or null
 //
@@ -42,19 +32,37 @@ export const createLogin = asyncHandler(async (req, res) => {
     const { username, password } = req.body;
     const pwhash = await bcrypt.hash(password, saltRounds);
 
-    const query = {
-        name: 'create-login',
-        text: 'INSERT INTO "LoginInfo" (username, passwordhash) values ($1, $2)',
-        values: [username, pwhash]
-    };
+    const client = await pgPool.connect();
+    
+    let userid;
+    try {
+        await client.query('BEGIN');
 
-    await pgPool.query(query)
-    const user = await getLogin(username);
+        const query_insert_login = {
+            name: 'create-login',
+            text: 'INSERT INTO "LoginInfo" (username, passwordhash) values ($1, $2) returning id',
+            values: [username, pwhash]
+        };
+        const res = await client.query(query_insert_login);
+        userid = res.rows[0].id;
 
-    // TODO create user along with login with the same id, even if it's empty
+        const query_insert_user = {
+            name: 'create-user',
+            text: 'INSERT INTO "User" (id) values ($1)',
+            values: [userid]
+        };
+
+        await client.query(query_insert_user);
+        await client.query('COMMIT');
+    } catch (e) {
+        await client.query('ROLLBACK');
+        throw e;
+    } finally {
+        client.release();
+    }
 
     res.status(200).json({
-        id : user.id
+        id : userid
     });
 });
 
@@ -69,10 +77,9 @@ export const login = asyncHandler(async (req, res) => {
     const authorized = await bcrypt.compare(password, user.passwordhash);
     if (! authorized) throw createError(StatusCodes.UNAUTHORIZED, `Invalid password, don't ever try again`);
 
+    const userid =  user.id;
 
     res.status(200).json({
-        accessToken : jwt.sign({ username }, jwtKey, { expiresIn : '1d' })
+        accessToken : jwt.sign({ username, userid }, jwtKey, { expiresIn : '1d' })
     });
 });
-
-export default router;

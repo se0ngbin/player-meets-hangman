@@ -16,7 +16,7 @@ DROP TABLE IF EXISTS "Interest";
 
 
 create table "Gender" (
-    id SMALLSERIAL PRIMARY KEY,
+    id INTEGER PRIMARY KEY,
     name VARCHAR(100) NOT NULL
 );
 
@@ -32,15 +32,15 @@ create table "LoginInfo" (
 );
 
 create table "User" (
-    id UUID PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    birthdate DATE NOT NULL,
+    id UUID PRIMARY KEY references "LoginInfo",
+    name VARCHAR(100),
+    birthdate DATE,
     bio TEXT,
     gender INTEGER REFERENCES "Gender"(id),    
     gendersInterestedIn SMALLINT, -- bitmap to genders
-    contactInfo TEXT,
+    contactInfo TEXT
 
-    FOREIGN KEY(id) references "LoginInfo"(id)
+    --  FOREIGN KEY(id) references "LoginInfo"(id)
 );
 
 create table "UserInterest" (
