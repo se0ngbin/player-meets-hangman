@@ -59,7 +59,7 @@ const Homepage = () => {
                 <div className="behindLayer1">
                 </div>
                 <div className="card">
-                        <img src={Girl1} alt="" className="userPhoto"  />
+                        <img src='../assets/girl1.jpeg' alt="" className="userPhoto"  />
                         <div className="buttons dislikeButton" onClick={handleDislike}>
                             <img src={CrossIcon} alt="" height="40%" className="icons"></img>
                         </div>

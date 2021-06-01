@@ -26,7 +26,10 @@ router.get('/profile/random', getRandomUserProfile);
 router.get('/profile/:username', getUserProfile);
 
 // to be deleted
-
+router.get("/api", (req, res) => {
+    res.json({ message: "Hello from server!" });
+  });
+  
 protectetRouter.get('/protected', async (_req, res) => {
     res.status(200).json(`congrats, you are logged in: ${res.locals.decoded.username}`);
 });
