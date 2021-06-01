@@ -42,11 +42,4 @@ protectedRouter.put('/user/answers', addUserQuestionAnswers);
 protectedRouter.delete('/user/answers', deleteUserQuestionAnswers);
 
 
-
-// to be deleted
-
-protectedRouter.get('/protected', async (_req, res) => {
-    res.status(200).json(`congrats, you are logged in: ${res.locals.decoded.username}`);
-});
-
 export default router;
