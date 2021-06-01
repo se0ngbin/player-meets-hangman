@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Switch, Link, Redirect } from "react-ro
 import Homepage from "./pages/Homepage";
 import Login from "./pages/Login";
 import CreateAccount from "./pages/CreateAccount";
+import HangmanGame from "./pages/Hangman";
 
 
 class App extends Component {
@@ -18,6 +19,7 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={Homepage} />
             <Route exact path="/login" component={Login} />
+            <Route exact path="/hangmangame" component={HangmanGame} />
             <Route exact path="/createaccount" component={CreateAccount} />
           </Switch>
         </Router>
