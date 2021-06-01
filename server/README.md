@@ -63,6 +63,56 @@ User profile by id:
 
     GET /profile/<username>
 
+returns:
+
+    {
+        id: UUID,
+        username: string,
+        name: string,
+        birthdate: date,
+        bio: string,
+        gender: Gender,
+        gendersInterestedIn: integer, // bitmap, each bit represents a displaement by the id from the "Gender" table(ex. gender with id 1 is set means (gender & (1 << 1)) returns true(non zero)),
+        interests: [ Interest, .. ],
+        photos: [ Photo, .. ], // a maximum of 6
+        questions_answers: { question_id: Question_Answer, .. }
+    }
+
+    where Gender is:
+
+    id: integer // id of gender, get the gender from the "Gender" table
+
+    where Interest is:
+
+    {
+        id: integer,
+        name: string
+    }
+
+    where Photo is:
+
+    {
+        id: integer,
+        data: base64 string
+    }
+
+    where Question_Answer is:
+
+    {
+        id: UUID, // id of question
+        text: string,
+        answers: [ Answer .. ]
+    }
+
+    where Answer is:
+    
+    {
+        id: UUID, // make or break possible answer id
+        text: string
+    }
+
+
+
 Random user profile:
 
     GET /profile/random

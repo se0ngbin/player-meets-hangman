@@ -70,9 +70,9 @@ create table "MakeOrBreakPossibleAnswer" (
 create table "MakeOrBreakUserAnswer" (
     userId UUID REFERENCES "User"(id),
     mobqId UUID REFERENCES "MakeOrBreakQuestion"(id),
-    mobpaId UUID REFERENCES "MakeOrBreakPossibleAnswer"(id),
+    mobqpaId UUID REFERENCES "MakeOrBreakPossibleAnswer"(id),
 
-    PRIMARY KEY (userId, mobqId, mobpaId)
+    PRIMARY KEY (userId, mobqId, mobqpaId)
 );
 
 -- matches stuff -- 
