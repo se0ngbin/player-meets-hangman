@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 import axios from 'axios'
-import { withRouter } from "react-router";
 import { BrowserRouter as Router, Route, Switch, Link, Redirect } from "react-router-dom";
 import Homepage from "./pages/Homepage";
 import Login from "./pages/Login";
@@ -29,7 +28,6 @@ class App extends Component {
             <Route exact path="/createaccount" component={CreateAccount} />
           </Switch>
         </Router>  
-        <h1>Hello from the frontend!</h1>
         <h1>{this.state.response.body}</h1>
       </div>
     );

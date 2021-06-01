@@ -24,6 +24,11 @@ app.use((error, _req, res, _next) => {
     });
 });
 
+// Handle GET requests to /api route
+app.get("/api", (req, res) => {
+  res.json({ message: "Hello from server!" });
+});
+
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });

@@ -1,0 +1,44 @@
+[
+    {
+        "userName": "Alexandra",
+        "userAge": "21",
+        "userCity": "Los Angeles",
+        "userState": "California"
+    },
+    {
+        "userName": "Bella",
+        "userAge": "22",
+        "userCity": "San Francisco",
+        "userState": "California"
+    },
+    {
+        "userName": "Cassandra",
+        "userAge": "23",
+        "userCity": "Newark",
+        "userState": "New Jersey"
+    },
+    {
+        "userName": "Dory",
+        "userAge": "20",
+        "userCity": "Aurora",
+        "userState": "Colorado"
+    },
+    {
+        "userName": "Elaine",
+        "userAge": "25",
+        "userCity": "Virginia Beach",
+        "userState": "Virginia"
+    },
+    {
+        "userName": "Frances",
+        "userAge": "23",
+        "userCity": "Lubbock",
+        "userState": "Texas"
+    },
+    {
+        "userName": "Grace",
+        "userAge": "24",
+        "userCity": "Tulsa",
+        "userState": "Oklahoma"
+    }
+]
