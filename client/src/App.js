@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch, Link, Redirect } from "react-ro
 import Homepage from "./pages/Homepage";
 import Login from "./pages/Login";
 import CreateAccount from "./pages/CreateAccount";
+import BuildProfile from "./pages/BuildProfile";
 
 class App extends Component {
   state = {
@@ -26,6 +27,7 @@ class App extends Component {
             <Route exact path="/" component={Homepage} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/createaccount" component={CreateAccount} />
+            <Route exact path="/buildprofile" component={BuildProfile} />
           </Switch>
         </Router>  
         <h1>{this.state.response.body}</h1>
