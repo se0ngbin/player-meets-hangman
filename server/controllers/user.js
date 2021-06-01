@@ -10,6 +10,28 @@ import { connectionString } from '../constants.js';
 const pgPool = new pg.Pool({ connectionString });
 const readFile = util.promisify(fs.readFile);
 
+// private functions
+
+async function executeArrayQuery(qstring, getQueries, elementToValues, req, res) {
+    const client = await pgPool.connect();
+    
+    try {
+        await client.query('BEGIN');
+
+        const queries = getQueries(req, res).map(
+            e => client.query(qstring, elementToValues(req, res, e)));
+                
+        await Promise.all(queries);
+
+        await client.query('COMMIT');
+    } catch (e) {
+        await client.query('ROLLBACK');
+        throw e;
+    } finally {
+        client.release();
+    }
+}
+
 // returns a user login object or null
 //
 
@@ -80,7 +102,7 @@ async function getProfile(username) {
     }
     const questions_result = await pgPool.query(questions_answers_query);
 
-    const grouped_question_answers = questions_result.rows.map((acc, row) => {
+    const grouped_question_answers = questions_result.rows.reduce((acc, row) => {
         if (! acc.hasOwnProperty(row.mobqid)) {
             acc[row.mobqid] = { id: row.mobqid, text: row.qtext, answers: [] };
         }
@@ -110,3 +132,119 @@ export const getRandomUserProfile = asyncHandler(async (_req, res) => {
 
     res.status(StatusCodes.OK).json(await getProfile(result.rows[0].username));
 });
+
+
+// protected functions
+
+// // user related
+
+export const updateUser = asyncHandler(async (req, res) => {
+    let qstring = `\
+    UPDATE "User" \
+    SET \
+    `;
+
+    let values = [];
+    let keys = Object.keys(req.body);
+    let i = 0;
+    for (; i < keys.length; ++i) {
+        if (i != 0)
+            qstring += ', ';
+
+        qstring += keys[i] + ` = \$${i+1}`;
+        values.push(req.body[keys[i]]);
+    }
+
+    qstring += ` WHERE id = \$${i+1}`;
+    values.push(res.locals.decoded.userid);
+        
+    await pgPool.query(qstring, values);
+    
+    res.status(200).json();
+});
+
+export const addUserInterests = asyncHandler(async (req, res) => {
+    let qstring = `\
+    INSERT INTO "UserInterest" \
+    (userId, interestId) \
+    VALUES \
+    `;
+
+    let values = [res.locals.decoded.userid];
+    for (let i = 0; i < req.body.length; ++i) {
+        if (i != 0) qstring += ', ';
+
+        qstring += `($1, \$${i+2})`;
+        values.push(req.body[i]);
+    }
+
+    await pgPool.query(qstring, values);
+
+    res.status(200).json();
+});
+
+export const deleteUserInterests = asyncHandler(async (req, res) => {
+    let qstring = `\
+    DELETE FROM "UserInterest" \
+    WHERE userId = $1 and interestId = $2 \
+    `;
+
+    await executeArrayQuery(
+        qstring,
+        (req, _res) => req.body,
+        (_req, res, interestId) => [res.locals.decoded.userid, interestId],
+        req,
+        res
+    );
+
+    res.status(200).json();
+});
+
+
+export const addUserQuestionAnswers = asyncHandler(async (req, res) => {
+    let qstring = `\
+    INSERT INTO "MakeOrBreakUserAnswer" \
+    (userId, mobqid, mobqpaid) \
+    VALUES \
+    ($1, $2, $3) \
+    `;
+
+    await executeArrayQuery(
+        qstring,
+        (req, _res) => req.body, 
+        (_req, res, answer) => [
+            res.locals.decoded.userid, 
+            answer.mobqid,
+            answer.mobqpaid
+        ],
+        req,
+        res
+    );
+
+    res.status(200).json();
+});
+
+export const deleteUserQuestionAnswers = asyncHandler(async (req, res) => {
+    let qstring = `\
+    DELETE FROM "MakeOrBreakUserAnswer" \
+    WHERE userId = $1 and mobqid = $2 and mobqpaid = $3 \
+    `;
+
+    await executeArrayQuery(
+        qstring,
+        (req, _res) => req.body, 
+        (_req, res, answer) => [
+            res.locals.decoded.userid, 
+            answer.mobqid,
+            answer.mobqpaid
+        ],
+        req,
+        res
+    );
+
+    res.status(200).json();
+});
+
+
+// photos stuff
+// TODO

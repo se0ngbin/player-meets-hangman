@@ -183,4 +183,62 @@ returns:
 
 ## Queries and updates on the user
 
+Update user data:
+    
+    PUT /user
+
+body:
+
+    {
+        name: string,
+        birthdate: date,
+        bio: string,
+        gender: integer, // GenderId
+        gendersInterestedIn: integer // bitmap
+        contactInfo: string
+    }
+
+returns: 
+    
+    STATUS 200
+
+Add user interests:
+
+    PUT /user/interests
+
+body:
+
+    [ interestId: integer ]
+
+Remove user interests:
+
+    DELETE /user/interests
+
+body:
+
+    [ interestId: integer ]
+
+Add make or break question / answer:
+
+    PUT /user/answers
+
+body:
+
+    [ { mobqid: makeOrBreakQuestionId(UUID), mobpaid: makeOrBreakPossibleAnswerId(UUID) }, .. ]
+
+returns:
+
+    STATUS 200
+
+Remove make or break question / answer:
+
+    DELETE /user/answers
+
+body:
+
+    [ { mobqid: makeOrBreakQuestionId(UUID), mobpaid: makeOrBreakPossibleAnswerId(UUID) }, .. ]
+
+returns:
+
+    STATUS 200
 
