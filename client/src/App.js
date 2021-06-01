@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 import axios from 'axios'
-import { withRouter } from "react-router";
 import { BrowserRouter as Router, Route, Switch, Link, Redirect } from "react-router-dom";
 import Homepage from "./pages/Homepage";
 import Login from "./pages/Login";

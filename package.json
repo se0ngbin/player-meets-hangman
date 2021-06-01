@@ -22,11 +22,8 @@
   },
   "homepage": "https://github.com/se0ngbin/player-meets-hangman#readme",
   "dependencies": {
-<<<<<<< HEAD
     "axios": "^0.21.1",
-=======
     "bcrypt": "^5.0.1",
->>>>>>> 8709774bc2eec10aa3a957667a394f92aee85dc9
     "bootstrap": "^4.6.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",

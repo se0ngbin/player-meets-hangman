@@ -26,7 +26,7 @@ export default function Login() {
   return (
     <div>
       <div className="navbar">
-          <img src={Logo} height="30" className="logo"></img>
+          <img src={Logo} alt="" height="30" className="logo"></img>
       </div>
       <div className="Login">
         <Form onSubmit={handleSubmit}>
