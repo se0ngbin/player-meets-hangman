@@ -21,7 +21,7 @@ Change the jwtKey in secret.js so it's secure.
 ## Login && create user
 
 
-Create a new login:
+### Create a new login:
 
     POST /createLogin
 
@@ -40,7 +40,7 @@ returns:
 
 
 
-Login:
+### Login:
     
     POST /login
 
@@ -59,7 +59,7 @@ Use accessToken in the HTTP request as a header "Authorization: Bearer $accessTo
 
 ## Queries that can be accessed by anybody(no login required)
 
-User profile by id:
+### User profile by id:
 
     GET /profile/<username>
 
@@ -113,11 +113,11 @@ returns:
 
 
 
-Random user profile:
+### Random user profile:
 
     GET /profile/random
 
-All make or break questions:
+### All make or break questions:
 
     GET /questions
 
@@ -132,7 +132,7 @@ returns:
         text: string
     }
 
-Make or break question possible answers:
+### Make or break question possible answers:
 
     GET /questions/<question-id>/answers
 
@@ -148,7 +148,7 @@ returns:
         text: string
     }
 
-All possible intersts/hobbies that someone can select:
+### All possible intersts/hobbies that someone can select:
 
     GET /interests
 
@@ -163,7 +163,7 @@ returns:
         text: string
     }
 
-All possible genders that a user can choose:
+### All possible genders that a user can choose:
 
     GET /genders
 
@@ -183,7 +183,7 @@ returns:
 
 ## Queries and updates on the user
 
-Update user data:
+### Update user data:
     
     PUT /user
 
@@ -202,7 +202,7 @@ returns:
     
     STATUS 200
 
-Add user interests:
+### Add user interests:
 
     PUT /user/interests
 
@@ -210,7 +210,7 @@ body:
 
     [ interestId: integer ]
 
-Remove user interests:
+### Remove user interests:
 
     DELETE /user/interests
 
@@ -218,7 +218,7 @@ body:
 
     [ interestId: integer ]
 
-Add make or break question / answer:
+### Add make or break question / answer:
 
     PUT /user/answers
 
@@ -230,7 +230,7 @@ returns:
 
     STATUS 200
 
-Remove make or break question / answer:
+### Remove make or break question / answer:
 
     DELETE /user/answers
 
