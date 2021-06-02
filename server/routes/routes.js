@@ -9,8 +9,15 @@ import {
     addUserInterests, 
     deleteUserInterests,
     addUserQuestionAnswers,
-    deleteUserQuestionAnswers
+    deleteUserQuestionAnswers,
+    getUserContactInfo
 } from '../controllers/user.js';
+import {
+    getLikes,
+    addLike,
+    getMatches,
+    getMatch
+} from '../controllers/match.js';
 import { jwtKey } from '../secret.js';
 
 const router = express.Router();
@@ -40,6 +47,14 @@ protectedRouter.delete('/user/interests', deleteUserInterests);
 
 protectedRouter.put('/user/answers', addUserQuestionAnswers);
 protectedRouter.delete('/user/answers', deleteUserQuestionAnswers);
+protectedRouter.get('/users/:userid/contact-info', getUserContactInfo);
+
+// likes & matches
+
+protectedRouter.get('/likes', getLikes);
+protectedRouter.post('/likes', addLike);
+protectedRouter.get('/matches', getMatches);
+protectedRouter.get('/matches/:matchid', getMatch);
 
 
 export default router;

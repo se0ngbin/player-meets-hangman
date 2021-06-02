@@ -1,7 +1,5 @@
 DROP TABLE IF EXISTS "Like";
-DROP TABLE IF EXISTS "HangmanQuestion";
 DROP TABLE IF EXISTS "Match";
-DROP TYPE  IF EXISTS HANGMAN_STATE;
 
 DROP TABLE IF EXISTS "MakeOrBreakUserAnswer";
 DROP TABLE IF EXISTS "MakeOrBreakPossibleAnswer";
@@ -79,25 +77,16 @@ create table "MakeOrBreakUserAnswer" (
 create table "Like" (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     likerId UUID REFERENCES "User"(id),
-    likeeId UUID REFERENCES "User"(id)
-);
+    likeeId UUID REFERENCES "User"(id),
 
-create type HANGMAN_STATE as ENUM ('created', 'started', 'solved', 'lost');
+    UNIQUE (likerId, likeeId)
+);
 
 create table "Match" (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    likerId UUID REFERENCES "User"(id),
-    likeeId UUID REFERENCES "User"(id),
-    hangmanStatus HANGMAN_STATE DEFAULT 'created',
-    lives smallint default 3
-);
+    userid1 UUID REFERENCES "User"(id),
+    userid2 UUID REFERENCES "User"(id),
 
-create table "HangmanQuestion" (
-    matchId UUID REFERENCES "Match"(id),
-    userId UUID REFERENCES "User"(id),
-    question TEXT,
-    answer TEXT,
-    lettersTried TEXT,
-
-    PRIMARY KEY (matchId, userId)
+    UNIQUE (userid1, userid2),
+    UNIQUE (userid2, userid1)
 );

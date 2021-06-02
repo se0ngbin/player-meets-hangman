@@ -14,6 +14,7 @@ const readFile = util.promisify(fs.readFile);
 
 async function executeArrayQuery(qstring, getQueries, elementToValues, req, res) {
     const client = await pgPool.connect();
+    let results;
     
     try {
         await client.query('BEGIN');
@@ -21,7 +22,7 @@ async function executeArrayQuery(qstring, getQueries, elementToValues, req, res)
         const queries = getQueries(req, res).map(
             e => client.query(qstring, elementToValues(req, res, e)));
                 
-        await Promise.all(queries);
+        results = await Promise.all(queries);
 
         await client.query('COMMIT');
     } catch (e) {
@@ -30,6 +31,8 @@ async function executeArrayQuery(qstring, getQueries, elementToValues, req, res)
     } finally {
         client.release();
     }
+
+    return results;
 }
 
 // returns a user login object or null
@@ -248,3 +251,29 @@ export const deleteUserQuestionAnswers = asyncHandler(async (req, res) => {
 
 // photos stuff
 // TODO
+//
+
+
+// contact info
+
+export const getUserContactInfo = asyncHandler(async (req, res) => {
+    const myId = res.locals.decoded.userid;
+    const otId = req.params.userid;
+
+    let qstring = '\
+    SELECT id from "Match" \
+    WHERE (userid1 = $1 and userid2 = $2) or \
+          (userid2 = $1 and userid1 = $2) \
+    ';
+    let result = await pgPool.query(qstring, [myId, otId]);
+    if (result.rowCount == 0)
+        throw createError(StatusCodes.FORBIDDEN, "No successful match with the given user");
+
+    qstring = '\
+    SELECT contactInfo FROM "User" \
+    WHERE id = $1 \
+    ';
+    result = await pgPool.query(qstring, [otId]);
+
+    res.status(200).json(result.rows[0]);
+});

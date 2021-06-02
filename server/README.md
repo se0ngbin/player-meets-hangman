@@ -314,9 +314,7 @@ returns:
     {
         id: UUID, // match id
         userid: UUID, // the id of the user you have matched
-        username: string, // username of the user you have matched
-        status: CREATED | STARTED | SOLVED | LOST, 
-        lives: integer
+        username: string // username of the user you have matched
     }
 
 ### Get a match
@@ -326,71 +324,6 @@ returns:
 returns:
 
     Match
-
-
-### Set a hangman question and answer
-
-    POST /matches/<match-id>/hangman/questions
-
-body:
-    
-    {
-        question: string,
-        answer: string
-    }
-
-returns:
-
-    STATUS OK // if you haven't set a question already(one chance)
-
-### Get a hangman question (returns the question that you were asked by the other person you liked)
-
-    GET /matches/<match-id>/hangman
-
-returns
-
-    {
-        question: string
-        hint: Hint
-    }
-
-    where Hint is:
-
-    { 
-        length: integer,
-        positions: {
-            int : char,  // position to character
-            ...
-        }
-    }
-
-    or error in case both questions and answers are not set
-
-
-### Try to answer a hangman question
-
-    POST /matches/<match-id>/hangman/answers
-
-body:
-
-    {
-        try: char
-    }
-
-returns:
-
-    {
-        hint: Hint
-    }
-
-possible errors:
-
-    "Input only a char please"
-    "Game not started"
-    "Game lost"
-    "Game finished already"
-    "You have alrealy tried this letter"
-
 
 ### Get contact info of a user
 
