@@ -1,6 +1,11 @@
 /* code modified from https://github.com/vetrivelcsamy/reactjs-hangman */
 
 
+import { Link } from 'react-router-dom';
+import Logo from '../assets/logo.png'
+import BellIcon from '../assets/bell_icon.png';
+import UserIcon from '../assets/user_icon.png';
+
 import React, { Component } from "react";
 import { randomWord } from "./words";
 import "./Hangman.css"
@@ -115,15 +120,14 @@ class Hangman extends Component {
     }
 
     return (
-      <div className="Hangman">
-        <nav className="navbar navbar-expand-lg">
-          <a className="navbar-brand text-light" href="/">
-            Hangman. <small>Do (or) Die</small>
-          </a>
-          <span className="d-xl-none d-lg-none text-primary">
-            Guessed wrong: {mistake}
-          </span>
-          <button
+      <div>
+        <div className="navbar">
+                <img src={Logo} alt="" height="30" className="logo"></img>
+                <img src={BellIcon} alt="" height="25" className="bellIcon"></img>
+                <Link to="/login"><img src={UserIcon} alt="" height="25" className="userIcon"></img></Link>
+            </div>
+
+            <button
             className="navbar-toggler sr-only"
             type="button"
             data-toggle="collapse"
@@ -132,7 +136,7 @@ class Hangman extends Component {
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            <span className="navbar-toggler-icon"></span>
+           
           </button>
           <div className="collapse navbar-collapse" id="navbarText">
             <ul className="navbar-nav mr-auto">
@@ -144,7 +148,7 @@ class Hangman extends Component {
               Guessed wrong: {mistake}
             </span>
           </div>
-        </nav>
+     
         <p className="text-center">
           <img src={images[mistake]} alt={altText} />
         </p>
@@ -164,7 +168,11 @@ class Hangman extends Component {
             </button>
           </p>
         </div>
+
+
       </div>
+          
+          
     );
   }
 }
