@@ -255,7 +255,7 @@ returns:
 
     [ file_id1, file_id2, .. ]
 
-### Remove useer photos:
+### Remove user photos:
 
     DELETE /user/photos
 
@@ -266,3 +266,115 @@ body:
 returns:
 
     STATUS 200
+
+## Likes and matches
+
+-------------------------------------------------------------------------------
+
+### Get all users you have liked
+
+    GET /likes
+
+returns:
+
+    [ { userid: UUID, username: string }, .. ]
+
+
+### Like a user
+
+    POST /likes
+
+body:
+
+    {
+        userid: UUID
+    }
+
+returns:
+
+    {
+        status: "liked" | "matched",
+        matchid: UUID // only if status is "matched"
+    }
+
+### Get all matches that you have
+
+    GET /matches
+
+returns:
+
+    [ Match, .. ]
+
+    where Match is:
+
+    {
+        id: UUID, // match id
+        userid: UUID, // the id of the user you have matched
+        username: string // username of the user you have matched
+    }
+
+
+### Set a hangman question and answer
+
+    POST /matches/<match-id>/hangman/questions
+
+body:
+    
+    {
+        question: string,
+        answer: string
+    }
+
+returns:
+
+    STATUS OK // if you haven't set a question already(one chance)
+
+### Get a hangman question (returns the question that you were asked by the other person you liked)
+
+    GET /matches/<match-id>/hangman
+
+returns
+
+    {
+        text: string
+    }
+
+    or error in case both questions and answers are not set
+
+
+### Try to answer a hangman question
+
+    POST /matches/<match-id>/hangman/answers
+
+
+body:
+
+    {
+        text: string
+    }
+
+returns:
+
+    STATUS OK   - on answer guessed correctly
+
+possible errors:
+
+    "Game not started"
+    "Game lost"
+    "Game finished already"
+    "You have alrealy tried this word"
+
+
+### Get contact info of a user
+
+    GET /users/<user-id>/contact-info
+
+returns:
+    
+    {
+        contactInfo: string
+    }
+
+possible errors:
+
+    "No successful match with the given user"

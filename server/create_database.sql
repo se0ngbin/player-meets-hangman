@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS "HangmanQuestion";
 DROP TABLE IF EXISTS "HangmanAnswer";
 DROP TABLE IF EXISTS "HangmanTry";
 DROP TABLE IF EXISTS "Match";
+DROP TYPE  IF EXISTS HANGMAN_STATE;
 
 DROP TABLE IF EXISTS "MakeOrBreakUserAnswer";
 DROP TABLE IF EXISTS "MakeOrBreakPossibleAnswer";
@@ -83,10 +84,14 @@ create table "Like" (
     likeeId UUID REFERENCES "User"(id)
 );
 
+create type HANGMAN_STATE as ENUM ('created', 'started', 'solved', 'lost');
+
 create table "Match" (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     likerId UUID REFERENCES "User"(id),
-    likeeId UUID REFERENCES "User"(id)
+    likeeId UUID REFERENCES "User"(id),
+    hangmanStatus HANGMAN_STATE DEFAULT 'created',
+    lives smallint default 3
 );
 
 create table "HangmanQuestion" (
