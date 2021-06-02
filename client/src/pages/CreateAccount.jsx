@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import "./Login.css";
@@ -13,9 +13,39 @@ export default function CreateAccount() {
     return email.length > 0 && password.length > 0;
   }
 
-  function handleSubmit(event) {
-    event.preventDefault();
+
+  async function handleSubmit(event) {
+    const tEmail = "vanessatu@g.ucla.edu";
+    const tPW = "vanessapassword";
+    const body = {
+        username: tEmail,
+        password: tPW,
+    }
+
+    try{
+        const response = await fetch("/createLogin", {
+            method: "POST",
+            body: JSON.stringify(body),
+        });
+        if (response.ok) {
+            console.log("account created successfully");
+            console.log(response.json());
+        } else {
+            console.log(response.status);
+        }
+        return response.ok;
+    } catch (err) {
+        console.error("create Account", err);
+        return err.status;
+    }
+
+    //POST /createLogin
+    
   }
+
+    useEffect(() => {
+        handleSubmit();
+    }, []);
 
   return (
     <div>
@@ -43,11 +73,11 @@ export default function CreateAccount() {
             />
           </Form.Group>
           <Link to="/buildprofile">
-            <Button className="button" block size="lg" type="submit" disabled={!validateForm()}>
+            <Button className="button" variant="info" block size="lg" type="submit" disabled={!validateForm()}>
                 Sign Up
             </Button>
           </Link>
-          <Link to="/login">I have an account</Link>
+          <Link to="/login" className="link">I have an account</Link>
         </Form>
       </div>
     </div>

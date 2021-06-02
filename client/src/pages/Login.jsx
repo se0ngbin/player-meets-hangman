@@ -12,6 +12,7 @@ import "./Login.css";
 import Logo from '../assets/logo.png'
 import { Link } from 'react-router-dom';
 
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -50,11 +51,11 @@ export default function Login() {
             />
           </Form.Group>
           <Link to="/">
-            <Button block size="lg" type="submit" disabled={!validateForm()}>
+            <Button block variant="info" size="lg" type="submit" disabled={!validateForm()}>
               Login
             </Button>
           </Link>
-          <Link to="/createaccount">Create a new account</Link>
+          <Link to="/createaccount" className="link">Create a new account</Link>
         </Form>
       </div>
     </div>

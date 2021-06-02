@@ -71,7 +71,7 @@ export default function BuildProfile() {
             />
           </Form.Group>
           <Link to="/">
-            <Button className="button" block size="lg" type="submit">
+            <Button className="button" variant="info" block size="lg" type="submit">
                 Start Matching!
             </Button>
           </Link>
