@@ -1,7 +1,5 @@
 DROP TABLE IF EXISTS "Like";
 DROP TABLE IF EXISTS "HangmanQuestion";
-DROP TABLE IF EXISTS "HangmanAnswer";
-DROP TABLE IF EXISTS "HangmanTry";
 DROP TABLE IF EXISTS "Match";
 DROP TYPE  IF EXISTS HANGMAN_STATE;
 
@@ -97,23 +95,9 @@ create table "Match" (
 create table "HangmanQuestion" (
     matchId UUID REFERENCES "Match"(id),
     userId UUID REFERENCES "User"(id),
-    text TEXT,
-
-    PRIMARY KEY (matchId, userId)
-);
-
-create table "HangmanAnswer" (
-    matchId UUID REFERENCES "Match"(id),
-    userId UUID REFERENCES "User"(id),
-    text TEXT,
-
-    PRIMARY KEY (matchId, userId)
-);
-
-create table "HangmanTry" (
-    matchId UUID REFERENCES "Match"(id),
-    userId UUID REFERENCES "User"(id), -- the user that tries to answer the question
-    text TEXT,
+    question TEXT,
+    answer TEXT,
+    lettersTried TEXT,
 
     PRIMARY KEY (matchId, userId)
 );

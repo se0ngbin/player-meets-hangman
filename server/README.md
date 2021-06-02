@@ -310,8 +310,18 @@ returns:
     {
         id: UUID, // match id
         userid: UUID, // the id of the user you have matched
-        username: string // username of the user you have matched
+        username: string, // username of the user you have matched
+        status: CREATED | STARTED | SOLVED | LOST, 
+        lives: integer
     }
+
+### Get a match
+
+    GET /matches/<match-id>
+
+returns:
+
+    Match
 
 
 ### Set a hangman question and answer
@@ -336,7 +346,18 @@ returns:
 returns
 
     {
-        text: string
+        question: string
+        hint: Hint
+    }
+
+    where Hint is:
+
+    { 
+        length: integer,
+        positions: {
+            int : char,  // position to character
+            ...
+        }
     }
 
     or error in case both questions and answers are not set
@@ -346,23 +367,25 @@ returns
 
     POST /matches/<match-id>/hangman/answers
 
-
 body:
 
     {
-        text: string
+        try: char
     }
 
 returns:
 
-    STATUS OK   - on answer guessed correctly
+    {
+        hint: Hint
+    }
 
 possible errors:
 
+    "Input only a char please"
     "Game not started"
     "Game lost"
     "Game finished already"
-    "You have alrealy tried this word"
+    "You have alrealy tried this letter"
 
 
 ### Get contact info of a user
