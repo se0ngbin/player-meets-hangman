@@ -20,7 +20,6 @@ import UserList from './userList.json'
 const Homepage = () => {
     const [currIndex, setCurrIndex] = useState(0);
     const [currProfile, setCurrProfile] = useState(UserList[0]);
-    let girl1 = Girl1;
 
     const fetchFeed = async () => {
         try {
