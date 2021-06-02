@@ -1,3 +1,5 @@
+# Database schema
+
 ![Database schema](db_schema.png "Database schema")
 
 # Database configuration
