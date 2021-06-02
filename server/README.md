@@ -1,3 +1,5 @@
+![Database schema](db_schema.png "Database schema")
+
 # Database configuration
 
 Install postgresql and create a database named DatingHangman.
