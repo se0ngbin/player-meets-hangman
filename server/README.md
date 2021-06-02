@@ -242,3 +242,27 @@ returns:
 
     STATUS 200
 
+
+### Add user photos(user can have at most 6 photos):
+
+    PUT /user/photos
+
+body:
+
+    [ Photo_file, .. ]
+
+returns: 
+
+    [ file_id1, file_id2, .. ]
+
+### Remove useer photos:
+
+    DELETE /user/photos
+
+body:
+
+    [ id1, id2, .. ]
+
+returns:
+
+    STATUS 200
