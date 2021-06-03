@@ -86,4 +86,81 @@
 }
 
 
+.notification {
+    height: 18rem;
+    width: 16rem;
+    background: rgb(255, 255, 255);
+    box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.25);
+    border-radius: 1rem;
+    overflow-y: scroll;
+    padding: 1rem;
+}
+
+.notifTitle {
+    font-size: 22px;
+}
+
+.menu1 {
+    display: flex;
+    flex-direction: column;
+  }
+.menu-item1 {
+    cursor: pointer;
+    border-bottom: 1px solid rgb(187, 187, 187);
+    font-size: 15px;
+    padding: 7px 0 7px 0;
+}
+
+.menu-item1:hover {
+    color: #2980b9;
+}
+
+.profilePopup {
+    margin: auto;
+    background: rgb(255, 255, 255);
+    width: 12rem;
+    height: 16rem;
+    padding: 1rem;
+    box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.25);
+    border-radius: 1rem;
+}
+
+.menu2 {
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+  }
+.menu-item2 {
+    cursor: pointer;
+    height: 2.5rem;
+    border-bottom: 1px solid rgb(187, 187, 187);
+    padding-top: 0.5rem;
+}
+.menu-item2:hover {
+    color: #2980b9;
+}
+
+.last-item {
+    border-bottom: none;
+}
+
+.selfPic {
+    border-radius: 50%;
+    height: 5rem;
+    width: 5rem;
+    overflow: hidden;
+    margin: 0 auto 1rem auto;
+}
+
+.selfInfo1 {
+    font-size: 14px;
+    margin: auto;
+}
+
+.selfInfo2 {
+    font-size: 11px;
+    margin-bottom: 0.5rem;
+}
+
+
 
