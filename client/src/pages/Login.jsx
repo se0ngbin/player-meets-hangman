@@ -48,7 +48,9 @@ export default function Login() {
   return (
     <div>
       <div className="navbar">
-          <img src={Logo} alt="" height="30" className="logo"></img>
+        
+          <a href="/"><img src={Logo} alt="" height="30" className="logo"></img></a>
+          
       </div>
       <h3 className="mt-5">Log In</h3>
       <div className="Login">
