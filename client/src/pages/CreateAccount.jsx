@@ -23,7 +23,7 @@ export default function CreateAccount() {
     }
 
     try{
-        const response = await fetch("/createLogin", {
+        const response = await fetch("http://localhost:3001/createLogin", {
             method: "POST",
             body: JSON.stringify(body),
         });

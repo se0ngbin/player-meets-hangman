@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import Logo from '../assets/logo.png'
 import BellIcon from '../assets/bell_icon.png';
 import UserIcon from '../assets/user_icon.png';
@@ -10,20 +10,25 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import CrossIcon from '../assets/cross_icon.png';
 import HeartIcon from '../assets/heart_icon.png';
 import Popup from 'reactjs-popup';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Button from 'react-bootstrap/Button'
-import UserList from './userList.json'
+// import Button from 'react-bootstrap/Button'
 
-//const userList = require('./userList');
+const userList = require('./userList');
 
 
 const Homepage = () => {
     const [currIndex, setCurrIndex] = useState(0);
-    const [currProfile, setCurrProfile] = useState(UserList[0]);
+    const [currProfile, setCurrProfile] = useState(userList[0]);
+
+    // TODO: test whether the fetching data function works
+    // once data returned, replace the static variables beneath
 
     const fetchFeed = async () => {
+
+        // Trying to GET random profile. Worked before now it doesn't work :(
+        // but GET requests worked when I tried to get "/genders" or "/interests"
+
         try {
-            const response = await fetch("/profile/random", {
+            const response = await fetch("http://localhost:3001/profile/random", {
                 method: "GET",
             });
             if (response.ok) {
@@ -41,16 +46,17 @@ const Homepage = () => {
     }
 
     useEffect(() => {
+
         fetchFeed();
     }, []);
 
     const handleLike = () => {
-        setCurrProfile(UserList[currIndex+1]);
+        setCurrProfile(userList[currIndex+1]);
         setCurrIndex(currIndex + 1);
     }
 
     const handleDislike = () => {
-        setCurrProfile(UserList[currIndex + 1]);
+        setCurrProfile(userList[currIndex + 1]);
         setCurrIndex(currIndex + 1);
     }
     
