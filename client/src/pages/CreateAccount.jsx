@@ -21,7 +21,7 @@ export default function CreateAccount() {
         username: tEmail,
         password: tPW,
     }
-
+/*
     try{
         const response = await fetch("/createLogin", {
             method: "POST",
@@ -38,7 +38,7 @@ export default function CreateAccount() {
         console.error("create Account", err);
         return err.status;
     }
-
+*/
     //POST /createLogin
     
   }

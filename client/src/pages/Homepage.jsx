@@ -17,7 +17,7 @@ import UserList from './userList.json'
 //const userList = require('./userList');
 
 
-const Homepage = () => {
+const Homepage = () => {/*
     const [currIndex, setCurrIndex] = useState(0);
     const [currProfile, setCurrProfile] = useState(UserList[0]);
 
@@ -53,7 +53,7 @@ const Homepage = () => {
         setCurrProfile(UserList[currIndex + 1]);
         setCurrIndex(currIndex + 1);
     }
-    
+    */
     return (
         <div>
             <div className="navbar">
@@ -108,20 +108,26 @@ const Homepage = () => {
                 <div className="behindLayer1">
                 </div>
                 <div className="card">
-                        <img src={Girl1} alt="" className="userPhoto"  />
-                        <div className="buttons dislikeButton" onClick={handleDislike}>
-                            <img src={CrossIcon} alt="" height="40%" className="icons"></img>
-                        </div>
-                        <div className="buttons likeButton" onClick={handleLike}>
-                            <img src={HeartIcon} alt="" height="50%" className="icons"></img>
-                        </div>
+                        
                     </div>
                 <div className="userInfo">
-                    <div className="title">{currProfile.userName}, {currProfile.userAge}</div>
-                    <div className="subtitle">{currProfile.userCity}, {currProfile.userState}</div>
+                    
                 </div>
             </div>
         </div>
     );
 }
 export default Homepage;
+
+/*
+<img src={Girl1} alt="" className="userPhoto"  />
+                        <div className="buttons dislikeButton" onClick={handleDislike}>
+                            <img src={CrossIcon} alt="" height="40%" className="icons"></img>
+                        </div>
+                        <div className="buttons likeButton" onClick={handleLike}>
+                            <img src={HeartIcon} alt="" height="50%" className="icons"></img>
+                        </div>
+                        
+                        <div className="title">{currProfile.userName}, {currProfile.userAge}</div>
+                    <div className="subtitle">{currProfile.userCity}, {currProfile.userState}</div>
+*/
