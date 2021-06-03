@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import Logo from '../assets/logo.png'
 import BellIcon from '../assets/bell_icon.png';
 import UserIcon from '../assets/user_icon.png';
-import "./Homepage.css"
-import Girl1 from '../assets/girl1.jpeg';
+import "./Homepage.css";
+import Girl1 from '../assets/photos/girl1.jpeg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CrossIcon from '../assets/cross_icon.png';
 import HeartIcon from '../assets/heart_icon.png';
