@@ -23,7 +23,7 @@ const Homepage = () => {
 
     const fetchFeed = async () => {
         try {
-            const response = await fetch("/profile/random", {
+            const response = await fetch("http://localhost:3001/profile/random", {
                 method: "GET",
             });
             if (response.ok) {
@@ -31,6 +31,7 @@ const Homepage = () => {
                 const data = await response.json();
                 console.log(data);
             } else {
+                console.log("didn't work.");
                 console.log(response.status);
             }
             return response.ok;
@@ -106,16 +107,16 @@ const Homepage = () => {
             </div>
             <div className="body">
                 <div className="behindLayer1">
-                </div>
+            </div>
                 <div className="card">
-                        <img src={Girl1} alt="" className="userPhoto"  />
-                        <div className="buttons dislikeButton" onClick={handleDislike}>
-                            <img src={CrossIcon} alt="" height="40%" className="icons"></img>
-                        </div>
-                        <div className="buttons likeButton" onClick={handleLike}>
-                            <img src={HeartIcon} alt="" height="50%" className="icons"></img>
-                        </div>
+                    <img src={Girl1} alt="" className="userPhoto"  />
+                    <div className="buttons dislikeButton" onClick={handleDislike}>
+                        <img src={CrossIcon} alt="" height="40%" className="icons"></img>
                     </div>
+                    <div className="buttons likeButton" onClick={handleLike}>
+                        <img src={HeartIcon} alt="" height="50%" className="icons"></img>
+                    </div>
+                </div>
                 <div className="userInfo">
                     <div className="title">{currProfile.userName}, {currProfile.userAge}</div>
                     <div className="subtitle">{currProfile.userCity}, {currProfile.userState}</div>
