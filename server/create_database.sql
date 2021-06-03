@@ -1,7 +1,4 @@
 DROP TABLE IF EXISTS "Like";
-DROP TABLE IF EXISTS "HangmanQuestion";
-DROP TABLE IF EXISTS "HangmanAnswer";
-DROP TABLE IF EXISTS "HangmanTry";
 DROP TABLE IF EXISTS "Match";
 
 DROP TABLE IF EXISTS "MakeOrBreakUserAnswer";
@@ -70,9 +67,9 @@ create table "MakeOrBreakPossibleAnswer" (
 create table "MakeOrBreakUserAnswer" (
     userId UUID REFERENCES "User"(id),
     mobqId UUID REFERENCES "MakeOrBreakQuestion"(id),
-    mobpaId UUID REFERENCES "MakeOrBreakPossibleAnswer"(id),
+    mobqpaId UUID REFERENCES "MakeOrBreakPossibleAnswer"(id),
 
-    PRIMARY KEY (userId, mobqId, mobpaId)
+    PRIMARY KEY (userId, mobqId, mobqpaId)
 );
 
 -- matches stuff -- 
@@ -80,35 +77,16 @@ create table "MakeOrBreakUserAnswer" (
 create table "Like" (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     likerId UUID REFERENCES "User"(id),
-    likeeId UUID REFERENCES "User"(id)
+    likeeId UUID REFERENCES "User"(id),
+
+    UNIQUE (likerId, likeeId)
 );
 
 create table "Match" (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    likerId UUID REFERENCES "User"(id),
-    likeeId UUID REFERENCES "User"(id)
-);
+    userid1 UUID REFERENCES "User"(id),
+    userid2 UUID REFERENCES "User"(id),
 
-create table "HangmanQuestion" (
-    matchId UUID REFERENCES "Match"(id),
-    userId UUID REFERENCES "User"(id),
-    text TEXT,
-
-    PRIMARY KEY (matchId, userId)
-);
-
-create table "HangmanAnswer" (
-    matchId UUID REFERENCES "Match"(id),
-    userId UUID REFERENCES "User"(id),
-    text TEXT,
-
-    PRIMARY KEY (matchId, userId)
-);
-
-create table "HangmanTry" (
-    matchId UUID REFERENCES "Match"(id),
-    userId UUID REFERENCES "User"(id), -- the user that tries to answer the question
-    text TEXT,
-
-    PRIMARY KEY (matchId, userId)
+    UNIQUE (userid1, userid2),
+    UNIQUE (userid2, userid1)
 );

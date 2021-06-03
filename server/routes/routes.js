@@ -2,11 +2,26 @@ import express from 'express';
 import { withJWTAuthMiddleware } from 'express-kun';
 import { createLogin, login } from '../controllers/login.js';
 import { getQuestions, getQuestionAnswers, getInterests, getGenders } from '../controllers/misc.js';
-import { getUserProfile, getRandomUserProfile } from '../controllers/user.js';
+import { 
+    getUserProfile, 
+    getRandomUserProfile, 
+    updateUser, 
+    addUserInterests, 
+    deleteUserInterests,
+    addUserQuestionAnswers,
+    deleteUserQuestionAnswers,
+    getUserContactInfo
+} from '../controllers/user.js';
+import {
+    getLikes,
+    addLike,
+    getMatches,
+    getMatch
+} from '../controllers/match.js';
 import { jwtKey } from '../secret.js';
 
 const router = express.Router();
-const protectetRouter = withJWTAuthMiddleware(router, jwtKey);
+const protectedRouter = withJWTAuthMiddleware(router, jwtKey);
 
 // login
 
@@ -25,10 +40,21 @@ router.get('/genders', getGenders);
 router.get('/profile/random', getRandomUserProfile);
 router.get('/profile/:username', getUserProfile);
 
-// to be deleted
+protectedRouter.put('/user', updateUser);
 
-protectetRouter.get('/protected', async (_req, res) => {
-    res.status(200).json(`congrats, you are logged in: ${res.locals.decoded.username}`);
-});
+protectedRouter.put('/user/interests', addUserInterests);
+protectedRouter.delete('/user/interests', deleteUserInterests);
+
+protectedRouter.put('/user/answers', addUserQuestionAnswers);
+protectedRouter.delete('/user/answers', deleteUserQuestionAnswers);
+protectedRouter.get('/users/:userid/contact-info', getUserContactInfo);
+
+// likes & matches
+
+protectedRouter.get('/likes', getLikes);
+protectedRouter.post('/likes', addLike);
+protectedRouter.get('/matches', getMatches);
+protectedRouter.get('/matches/:matchid', getMatch);
+
 
 export default router;
