@@ -10,6 +10,8 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import "./Login.css";
 import Logo from '../assets/logo.png'
+import { Link } from 'react-router-dom';
+
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -30,6 +32,7 @@ export default function Login() {
           <a href="/"><img src={Logo} alt="" height="30" className="logo"></img></a>
           
       </div>
+      <h3 className="mt-5">Log In</h3>
       <div className="Login">
         <Form onSubmit={handleSubmit}>
           <Form.Group size="lg" controlId="email">
@@ -49,9 +52,12 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </Form.Group>
-          <Button block size="lg" type="submit" disabled={!validateForm()}>
-            Login
-          </Button>
+          <Link to="/">
+            <Button block variant="info" size="lg" type="submit" disabled={!validateForm()}>
+              Login
+            </Button>
+          </Link>
+          <Link to="/createaccount" className="link">Create a new account</Link>
         </Form>
       </div>
     </div>

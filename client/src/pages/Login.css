@@ -19,3 +19,13 @@
   margin-right:auto;
   box-shadow: 0px 0px 4px 4px rgba(104, 104, 104, 0.25);
 }
+
+.button {
+  background-color: #60C3ED;
+  border: none;
+}
+
+.link {
+  color: #188C9F;
+  
+}
