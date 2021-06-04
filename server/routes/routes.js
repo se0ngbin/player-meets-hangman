@@ -10,7 +10,8 @@ import {
     deleteUserInterests,
     addUserQuestionAnswers,
     deleteUserQuestionAnswers,
-    getUserContactInfo
+    getUserContactInfo,
+    addPhotos
 } from '../controllers/user.js';
 import {
     getLikes,
@@ -48,6 +49,8 @@ protectedRouter.delete('/user/interests', deleteUserInterests);
 protectedRouter.put('/user/answers', addUserQuestionAnswers);
 protectedRouter.delete('/user/answers', deleteUserQuestionAnswers);
 protectedRouter.get('/users/:userid/contact-info', getUserContactInfo);
+
+protectedRouter.put('/user/photos', addPhotos);
 
 // likes & matches
 

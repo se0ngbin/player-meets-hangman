@@ -48,7 +48,7 @@ create table "UserInterest" (
 );
 
 create table "Photo" (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID PRIMARY KEY, -- DEFAULT gen_random_uuid(),
     userId UUID REFERENCES "User"(id),
     "path" TEXT
 );
