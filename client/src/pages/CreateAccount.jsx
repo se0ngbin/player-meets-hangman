@@ -66,10 +66,12 @@ const CreateAccount = () => {
           </Form.Group>
           
           <Form.Group role="form">
+            <Link to="/">
               <Button className="button" variant="info" block size="lg" type="submit" 
                 disabled={!validateForm()}>
                   Sign Up
               </Button>
+            </Link>
           </Form.Group>          
           <Link to="/login" className="link">I have an account</Link>
         </Form>
