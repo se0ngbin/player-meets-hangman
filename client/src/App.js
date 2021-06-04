@@ -6,6 +6,7 @@ import CreateAccount from "./pages/CreateAccount";
 import BuildProfile from "./pages/BuildProfile";
 import HangmanGame from "./pages/Hangman";
 import Landing from "./pages/Landing";
+import Profile from "./pages/ProfilePage";
 import './App.css';
 
 
@@ -25,6 +26,7 @@ class App extends Component {
             <Route exact path="/landing" component={Landing} />
             <Route exact path="/createaccount" component={CreateAccount} />
             <Route exact path="/buildprofile" component={BuildProfile} />
+            <Route exact path="/profile" component={Profile} />
           </Switch>
         </Router>
       </div>

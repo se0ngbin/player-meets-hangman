@@ -4,44 +4,27 @@ import Logo from '../assets/logo.png'
 import BellIcon from '../assets/bell_icon.png';
 import UserIcon from '../assets/user_icon.png';
 import "./Homepage.css"
-import Girl1 from '../assets/girl1.jpeg';
-import Girl2 from '../assets/girl2.jpeg';
-import Girl3 from '../assets/girl3.jpeg';
-import Girl4 from '../assets/girl4.jpeg';
-import Girl5 from '../assets/girl5.jpeg';
-import Girl6 from '../assets/girl6.jpeg';
-import Girl7 from '../assets/girl7.jpeg';
 import Guy from '../assets/guy.jpeg';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import CrossIcon from '../assets/cross_icon.png';
-import HeartIcon from '../assets/heart_icon.png';
 import Popup from 'reactjs-popup';
-import HangmanIcon from '../assets/hangman_game.png';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button'
 
 const userList = require('./userList');
 
-const feedPhotos = [
-    Girl1,
-    Girl2,
-    Girl3,
-    Girl4,
-    Girl5,
-    Girl6,
-    Girl7,
-];
+const userSelf = {
+    "userName": "David Holmwood",
+    "userAge": "23",
+    "userCity": "San Francisco",
+    "userState": "California",
+    "userBio": "Curabitur et sodales ante. Ut vitae tincidunt tellus, et laoreet orci. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
+    "userInterest": "Birdwatching",
+    "userInstagram": "@davidig"
+};
 
-const Homepage = () => {
-    const [currIndex, setCurrIndex] = useState(0);
-    const [currProfile, setCurrProfile] = useState(userList[0]);
-    const [currPhoto, setCurrPhoto] = useState(feedPhotos[0]);
-    const [endOfFeed, setEndOfFeed] = useState(false);
+const Profile = () => {
     const [popupShow, setPopupShow] = useState(false);
     const [matchedUser, setMatchedUser] = useState({});
-
-    // TODO: test whether the fetching data function works
-    // once data returned, replace the static variables beneath
 
     const fetchFeed = async () => {
 
@@ -71,27 +54,7 @@ const Homepage = () => {
         fetchFeed();
     }, []);
 
-    const handleLike = () => {
-        if(currIndex < 6) {
-            setCurrProfile(userList[currIndex + 1]);
-            setCurrPhoto(feedPhotos[currIndex + 1]);
-            setCurrIndex(currIndex + 1);
-        }
-        else {
-            setEndOfFeed(true);
-        }
-    }
 
-    const handleDislike = () => {
-        if(currIndex < 6) {
-            setCurrProfile(userList[currIndex + 1]);
-            setCurrPhoto(feedPhotos[currIndex + 1]);
-            setCurrIndex(currIndex + 1);
-        }
-        else {
-            setEndOfFeed(true);
-        }
-    }
 
     const matches = [
         "Alexandra",
@@ -189,11 +152,9 @@ const Homepage = () => {
                     closeOnDocumentClick
                 >
                     <div className="profilePopup">
-                        <Link to="/profile">
-                            <div className="selfPic">
-                                <img src={Guy} alt="" height="100%"/>
-                            </div>
-                        </Link>
+                        <div className="selfPic">
+                            <img src={Guy} alt="" height="100%"/>
+                        </div>
                         <div className="selfInfo1">David Holmwood (23)</div>
                         <div className="selfInfo2">San Francisco, California</div>
                         <div className="menu2">
@@ -203,35 +164,28 @@ const Homepage = () => {
                 </Popup>
                 
             </div>
-            <div className="body">
-                <div className="card">
-                    {endOfFeed ? (
-                            <div className="endOfFeedText">No More Profiles!</div>
-                    ) : (
-                    <div>
-                        <img src={currPhoto} alt="" className="userPhoto"  />
-                        <div className="buttons dislikeButton" onClick={handleDislike}>
-                            <img src={CrossIcon} alt="" height="40%" className="icons"></img>
-                        </div>
-                        <div className="buttons likeButton" onClick={handleLike}>
-                            <img src={HeartIcon} alt="" height="50%" className="icons"></img>
-                        </div>
-                    </div>
-                    )} 
-                    
+            <div className="body2">
+                <div className="selfPic">
+                    <img src={Guy} alt="" height="100%"/>
                 </div>
-                {!endOfFeed ? (
-                    <div className="userInfo">
-                        <div className="title">{currProfile.userName}, {currProfile.userAge}</div>
-                        <div className="subtitle">{currProfile.userCity}, {currProfile.userState}</div>
-                    </div>
-                ) : null}
-                
-                <Link to="/hangmangame">
-                    <div className="hangmanButton" onClick={handleDislike}>
-                        <img src={HangmanIcon} alt="" className="hangmanIcon"></img>
-                    </div>
-                </Link>
+                <div className="popUpContent">  
+                    Name: {userSelf.userName}
+                </div>
+                <div className="popUpContent">  
+                    Age: {userSelf.userAge}
+                </div>
+                <div className="popUpContent">
+                    Location: {userSelf.userCity}, {userSelf.uerState}
+                </div>
+                <div className="popUpContent">
+                    Bio: {userSelf.userBio}
+                </div>
+                <div className="popUpContent">
+                    Interest: {userSelf.userInterest}
+                </div>
+                <div className="popUpContent">
+                    Instagram Account: {userSelf.userInstagram}
+                </div>
             </div>
             <MatchPopup
                 show={popupShow}
@@ -241,4 +195,4 @@ const Homepage = () => {
         </div>
     );
 }
-export default Homepage;
+export default Profile;

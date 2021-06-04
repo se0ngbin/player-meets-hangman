@@ -66,7 +66,7 @@ const CreateAccount = () => {
           </Form.Group>
           
           <Form.Group role="form">
-            <Link to="/">
+            <Link to="/buildprofile">
               <Button className="button" variant="info" block size="lg" type="submit" 
                 disabled={!validateForm()}>
                   Sign Up
