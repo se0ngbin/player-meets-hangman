@@ -40,9 +40,11 @@ async function executeArrayQuery(qstring, getQueries, elementToValues, req, res)
 // returns a user login object or null
 //
 
-async function getPhotoData_base64(path) {
+async function getPhotoData(path, encoding) {
     const photo_buffer = await readFile(path);
-    return photo_buffer.toString('base64');
+
+    // console.log(photo_buffer.toString(encoding));
+    return photo_buffer.toString(encoding);
 }
 
 async function getPhotos(userid) {
@@ -57,10 +59,14 @@ async function getPhotos(userid) {
     const query_result = await pgPool.query(query);
     const photos = query_result.rows;
 
-    return photos.map((acc, photo) => {
-        acc.push({ id: photo.id, data: getPhotoData_base64(photo.path) });
-        return acc;
-    }, []);
+    let result = []
+    for (let photo of photos) {
+        let photoData = await getPhotoData(photo.path, 'base64');
+
+        result.push({ id: photo.id, data: photoData });
+    }
+
+    return result;
 }
 
 async function getProfile(username) {
