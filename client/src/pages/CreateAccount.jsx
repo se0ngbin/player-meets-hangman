@@ -5,7 +5,7 @@ import "./Login.css";
 import Logo from '../assets/logo.png';
 import { Link, useHistory } from 'react-router-dom';
 
-const CreateAccount = () => {
+const CreateAccount = ({setAuth} ) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   
@@ -26,9 +26,11 @@ const CreateAccount = () => {
       });
       if (response.ok) {
         console.log("account created successfully"); 
+        setAuth(true);
         history.push('/buildprofile');
       } else {
         console.log(response.status);
+        setAuth(false);
         console.log("nope... suck it up and start debugging again");
       }
     } 
@@ -64,14 +66,11 @@ const CreateAccount = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </Form.Group>
-          
           <Form.Group role="form">
-            <Link to="/">
               <Button className="button" variant="info" block size="lg" type="submit" 
                 disabled={!validateForm()}>
                   Sign Up
               </Button>
-            </Link>
           </Form.Group>          
           <Link to="/login" className="link">I have an account</Link>
         </Form>

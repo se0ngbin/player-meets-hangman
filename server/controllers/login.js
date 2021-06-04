@@ -77,7 +77,7 @@ export const login = asyncHandler(async (req, res) => {
     const authorized = await bcrypt.compare(password, user.passwordhash);
     if (! authorized) throw createError(StatusCodes.UNAUTHORIZED, `Invalid password, don't ever try again`);
 
-    const userid =  user.id;
+    const userid = user.id;
 
     res.status(200).json({
         accessToken : jwt.sign({ username, userid }, jwtKey, { expiresIn : '1d' })

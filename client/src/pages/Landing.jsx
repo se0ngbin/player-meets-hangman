@@ -1,36 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
-import Logo from '../assets/logo.png'
-import BellIcon from '../assets/bell_icon.png';
-import UserIcon from '../assets/user_icon.png';
+import React from "react";
 import "./Landing.css";
-
 import Background from '../assets/landing.jpg'
-
 import 'bootstrap/dist/css/bootstrap.min.css';
-import CrossIcon from '../assets/cross_icon.png';
-import HeartIcon from '../assets/heart_icon.png';
-import Popup from 'reactjs-popup';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Button from 'react-bootstrap/Button'
-import UserList from './userList.json'
 
   function Landing() {
     return (
 
         <div>
-        <div className="navbar">
-                <img src={Logo} alt="" height="30" className="logo"></img>
-                <Popup
-                    trigger={
-                        <img src={BellIcon} alt="" height="25" className="bellIcon"></img>
-                    }
-                    position='bottom right'
-                    closeOnDocumentClick
-                >
-                    
-                </Popup>
-            </div>
             <div className="container content">
                 <div className="row">
                     <div className="col-sm-3 talk">
