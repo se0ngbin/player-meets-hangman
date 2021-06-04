@@ -11,13 +11,14 @@ import Profile from "./pages/ProfilePage";
 
 
 function App() {
+  // const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [currentUser, setCurrentUser] = useState("");
 
   const setAuth = (boolean, username = currentUser) => {
     setIsAuthenticated(boolean);
     setCurrentUser(username);
-  };
+  }
 
     return (
       <div className="App">
@@ -25,7 +26,7 @@ function App() {
           <Router>
             <Switch>
               <Route exact path="/" render={(props) => isAuthenticated ? 
-                          (<Homepage {...props} setAuth={setAuth} />) : (<Redirect to="/landing" />)}/>
+                          (<Homepage {...props} setAuth={setAuth} currentUser={currentUser} />) : (<Redirect to="/landing" />)}/>
               <Route exact path="/login" render={(props) => !isAuthenticated ? 
                           (<Login {...props} setAuth={setAuth} />) : (<Redirect to="/" />)}/>
               <Route exact path="/landing" component={Landing} />
