@@ -45,10 +45,6 @@ const Homepage = ( {setAuth} ) => {
     // once data returned, replace the static variables beneath
 
     const fetchFeed = async () => {
-
-        // Trying to GET random profile. Worked before now it doesn't work :(
-        // but GET requests worked when I tried to get "/genders" or "/interests"
-
         try {
             const response = await fetch("http://localhost:3001/profile/random", {
                 method: "GET",
@@ -57,6 +53,7 @@ const Homepage = ( {setAuth} ) => {
                 console.log("profile get successfully");
                 const data = await response.json();
                 console.log(data);
+                setCurrProfile(data);
             } else {
                 console.log("didn't work.");
                 console.log(response.status);
@@ -72,18 +69,45 @@ const Homepage = ( {setAuth} ) => {
         fetchFeed();
     }, []);
 
-    const handleLike = () => {
-        if(currIndex < 6) {
+    const handleLike = async () => {
+        try {
+            const body = { userid: currProfile.id };
+            const response = await fetch("http://localhost:3001/likes", {
+              method: "POST",
+              headers: { "Content-Type": "application/json",
+                          "Authorization": 'Bearer ' + localStorage.getItem("token") },
+              body: JSON.stringify(body),
+            });
+            if (response.ok) {
+              console.log("liked successfully"); 
+              console.log(response.status);
+              fetchFeed();
+            } else {
+              console.log(response.status);
+              console.log("nope... suck it up and start debugging again");
+            }
+        } 
+        catch (err) 
+        {
+            console.error("like", err);
+            return err.status;
+        }
+
+        // TODO: fix the 6 to numbers of people left in database
+        /*if(currIndex < 6) {
             setCurrProfile(userList[currIndex + 1]);
             setCurrPhoto(feedPhotos[currIndex + 1]);
             setCurrIndex(currIndex + 1);
         }
         else {
             setEndOfFeed(true);
-        }
+        }*/
+        setCurrPhoto(feedPhotos[currIndex + 1]);
     }
 
     const handleDislike = () => {
+        fetchFeed();
+        /*
         if(currIndex < 6) {
             setCurrProfile(userList[currIndex + 1]);
             setCurrPhoto(feedPhotos[currIndex + 1]);
@@ -91,15 +115,19 @@ const Homepage = ( {setAuth} ) => {
         }
         else {
             setEndOfFeed(true);
-        }
+        }*/
     }
 
-    const matches = [
-        "Alexandra",
-        "Bella",
-        "Cassandra",
-        "Dory"
-    ];
+    function calculateAge(dateString) {
+        var today = new Date();
+        var birthDate = new Date(dateString);
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    }
 
     function findUser(name) {
         return userList.find((user) => {
@@ -227,8 +255,8 @@ const Homepage = ( {setAuth} ) => {
                 </div>
                 {!endOfFeed ? (
                     <div className="userInfo">
-                        <div className="title">{currProfile.userName}, {currProfile.userAge}</div>
-                        <div className="subtitle">{currProfile.userCity}, {currProfile.userState}</div>
+                        <div className="title">{currProfile.name}, {calculateAge(currProfile.birthdate)}</div>
+                        <div className="subtitle">{currProfile.bio}</div>
                     </div>
                 ) : null}
                 
