@@ -1,23 +1,43 @@
 import React, { useEffect, useState } from "react";
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Logo from '../assets/logo.png'
 import BellIcon from '../assets/bell_icon.png';
 import UserIcon from '../assets/user_icon.png';
 import "./Homepage.css"
 import Girl1 from '../assets/girl1.jpeg';
+import Girl2 from '../assets/girl2.jpeg';
+import Girl3 from '../assets/girl3.jpeg';
+import Girl4 from '../assets/girl4.jpeg';
+import Girl5 from '../assets/girl5.jpeg';
+import Girl6 from '../assets/girl6.jpeg';
+import Girl7 from '../assets/girl7.jpeg';
 import Guy from '../assets/guy.jpeg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import CrossIcon from '../assets/cross_icon.png';
 import HeartIcon from '../assets/heart_icon.png';
 import Popup from 'reactjs-popup';
+import HangmanIcon from '../assets/hangman_game.png';
 // import Button from 'react-bootstrap/Button'
 
 const userList = require('./userList');
 
+const feedPhotos = [
+    Girl1,
+    Girl2,
+    Girl3,
+    Girl4,
+    Girl5,
+    Girl6,
+    Girl7,
+];
 
 const Homepage = () => {
     const [currIndex, setCurrIndex] = useState(0);
     const [currProfile, setCurrProfile] = useState(userList[0]);
+    const [currPhoto, setCurrPhoto] = useState(feedPhotos[0]);
+    const [endOfFeed, setEndOfFeed] = useState(false);
+    const [popupShow, setPopupShow] = useState(false);
+    const [matchedUser, setMatchedUser] = useState({});
 
     // TODO: test whether the fetching data function works
     // once data returned, replace the static variables beneath
@@ -47,19 +67,81 @@ const Homepage = () => {
     }
 
     useEffect(() => {
-
         fetchFeed();
     }, []);
 
     const handleLike = () => {
-        setCurrProfile(userList[currIndex+1]);
-        setCurrIndex(currIndex + 1);
+        if(currIndex < 6) {
+            setCurrProfile(userList[currIndex + 1]);
+            setCurrPhoto(feedPhotos[currIndex + 1]);
+            setCurrIndex(currIndex + 1);
+        }
+        else {
+            setEndOfFeed(true);
+        }
     }
 
     const handleDislike = () => {
-        setCurrProfile(userList[currIndex + 1]);
-        setCurrIndex(currIndex + 1);
+        if(currIndex < 6) {
+            setCurrProfile(userList[currIndex + 1]);
+            setCurrPhoto(feedPhotos[currIndex + 1]);
+            setCurrIndex(currIndex + 1);
+        }
+        else {
+            setEndOfFeed(true);
+        }
     }
+
+    const matches = [
+        "Alexandra",
+        "Bella",
+        "Cassandra",
+        "Dory",
+    ];
+
+    const match_notifs = matches.map( (match) =>
+        <div className="menu-item1">
+            You matched with {match}. See their profile now!
+        </div>
+    );
+
+    function MatchPopup(props) {
+        var head = "";
+        var body = "";
+
+        head = props.;
+        body = "You can find your documents in your profile."
+        const handleOnClick = () => {
+            props.onHide(); 
+            if (props.hassuccess) {
+                history.push("/");
+            }
+        }
+    
+        return (
+          <Modal
+            {...props}
+            size="lg"
+            aria-labelledby="contained-modal-title-vcenter"
+            centered
+          >
+            <Modal.Header closeButton>
+              <Modal.Title id="contained-modal-title-vcenter">
+                {head}
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <p>
+                {body}
+              </p>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button onClick={handleOnClick}>Close</Button>
+            </Modal.Footer>
+          </Modal>
+        );
+      }
+
     
     return (
         <div>
@@ -75,19 +157,9 @@ const Homepage = () => {
                     <div className="notification">
                         <div className="notifTitle">Notifications</div>
                         <div className="menu1">
-                            <div className="menu-item1">
-                                You matched with Alexandra! Play hangman with her!
-                            </div>
-                            <div className="menu-item1">
-                                You matched with Bella! Play hangman with her!
-                            </div>
-                            <div className="menu-item1">
-                                You matched with Cassandra! Play hangman with her!
-                            </div>
-                            <div className="menu-item1 last-item">
-                                You matched with Dory! Play hangman with her!
-                            </div>
+                            {match_notifs}
                         </div>
+                        <div className="noMoreText">No more notifications</div>
                     </div>
                 </Popup>
                 <Popup
@@ -105,29 +177,47 @@ const Homepage = () => {
                         <div className="selfInfo2">San Francisco, California</div>
                         <div className="menu2">
                             <div className="menu-item2">Past Matches</div>
-                            <div className="menu-item2 last-item">Log Out</div>
+                            <Link to="/login"><div className="menu-item2 last-item links">Log Out</div></Link>
                         </div>
                     </div>
                 </Popup>
                 
             </div>
             <div className="body">
-                <div className="behindLayer1">
-            </div>
                 <div className="card">
-                    <img src={Girl1} alt="" className="userPhoto"  />
-                    <div className="buttons dislikeButton" onClick={handleDislike}>
-                        <img src={CrossIcon} alt="" height="40%" className="icons"></img>
+                    {endOfFeed ? (
+                            <div className="endOfFeedText">No More Profiles!</div>
+                    ) : (
+                    <div>
+                        <img src={currPhoto} alt="" className="userPhoto"  />
+                        <div className="buttons dislikeButton" onClick={handleDislike}>
+                            <img src={CrossIcon} alt="" height="40%" className="icons"></img>
+                        </div>
+                        <div className="buttons likeButton" onClick={handleLike}>
+                            <img src={HeartIcon} alt="" height="50%" className="icons"></img>
+                        </div>
                     </div>
-                    <div className="buttons likeButton" onClick={handleLike}>
-                        <img src={HeartIcon} alt="" height="50%" className="icons"></img>
+                    )} 
+                    
+                </div>
+                {!endOfFeed ? (
+                    <div className="userInfo">
+                        <div className="title">{currProfile.userName}, {currProfile.userAge}</div>
+                        <div className="subtitle">{currProfile.userCity}, {currProfile.userState}</div>
                     </div>
-                </div>
-                <div className="userInfo">
-                    <div className="title">{currProfile.userName}, {currProfile.userAge}</div>
-                    <div className="subtitle">{currProfile.userCity}, {currProfile.userState}</div>
-                </div>
+                ) : null}
+                
+                <Link to="/hangmangame">
+                    <div className="hangmanButton" onClick={handleDislike}>
+                        <img src={HangmanIcon} alt="" className="hangmanIcon"></img>
+                    </div>
+                </Link>
             </div>
+            <MatchPopup
+                show={true}
+                onHide={() => setPopupShow(false)}
+                value={matchedUser}
+            />)
         </div>
     );
 }

@@ -3,42 +3,64 @@
         "userName": "Alexandra",
         "userAge": "21",
         "userCity": "Los Angeles",
-        "userState": "California"
+        "userState": "California",
+        "userBio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec placerat in dolor et semper. Maecenas ut ullamcorper quam. Ut dignissim libero rhoncus orci finibus, id varius est lobortis.",
+        "interest": "Lockpicking",
+        "instagram": "@whichalexandra"
+        
     },
     {
         "userName": "Bella",
         "userAge": "22",
         "userCity": "San Francisco",
-        "userState": "California"
+        "userState": "California",
+        "userBio": "Curabitur sollicitudin rutrum tellus, vitae scelerisque enim tincidunt et. Donec non quam ut tortor dapibus fringilla at eu sem.",
+        "interest": "Flag football",
+        "instagram": "@bellafella"
     },
     {
         "userName": "Cassandra",
         "userAge": "23",
         "userCity": "Newark",
-        "userState": "New Jersey"
+        "userState": "New Jersey",
+        "userBio": "In lorem libero, gravida sit amet nisi at, malesuada suscipit nisl. Vivamus arcu ex, blandit eu velit sit amet, mattis scelerisque nisl. Etiam nec aliquet nulla. Quisque turpis magna, sollicitudin eget nisi at, fermentum condimentum enim.",
+        "interest": "Rock painting",
+        "instagram": "@cassandrasandra"
     },
     {
         "userName": "Dory",
         "userAge": "20",
         "userCity": "Aurora",
-        "userState": "Colorado"
+        "userState": "Colorado",
+        "userBio": "Curabitur et sodales ante. Ut vitae tincidunt tellus, et laoreet orci. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
+        "interest": "Leather tooling",
+        "instagram": "@dorystory"
     },
     {
         "userName": "Elaine",
         "userAge": "25",
         "userCity": "Virginia Beach",
-        "userState": "Virginia"
+        "userState": "Virginia",
+        "userBio": "Nulla quis lobortis nisi, at efficitur lorem. Morbi ultrices iaculis volutpat. Integer ultrices massa ac augue gravida, at vulputate magna pretium.",
+        "interest": "Renaissance fairs",
+        "instagram": "@elainedomain"
     },
     {
         "userName": "Frances",
         "userAge": "23",
         "userCity": "Lubbock",
-        "userState": "Texas"
+        "userState": "Texas",
+        "userBio": "Sed in viverra mauris, id ornare ante. Maecenas elementum pretium libero imperdiet posuere.",
+        "interest": "Learn to be a mime",
+        "instagram": "@francescanvas"
     },
     {
         "userName": "Grace",
         "userAge": "24",
         "userCity": "Tulsa",
-        "userState": "Oklahoma"
+        "userState": "Oklahoma",
+        "userBio": "Mauris porta pellentesque turpis nec rhoncus. Ut quis est diam. Nulla in justo placerat, dictum diam at, hendrerit ipsum. Sed vel elementum odio. Nunc nec dignissim nibh, vel elementum ipsum.",
+        "interest": "Sea glass collecting",
+        "instagram": "@gracespace"
     }
 ]
