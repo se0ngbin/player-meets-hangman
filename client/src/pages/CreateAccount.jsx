@@ -1,52 +1,44 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import "./Login.css";
-import Logo from '../assets/logo.png'
-import { Link } from 'react-router-dom';
+import Logo from '../assets/logo.png';
+import { Link, useHistory } from 'react-router-dom';
 
-export default function CreateAccount() {
+const CreateAccount = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  
   function validateForm() {
     return email.length > 0 && password.length > 0;
   }
 
-
-  async function handleSubmit(event) {
-    const tEmail = "vanessatu@g.ucla.edu";
-    const tPW = "vanessapassword";
-    const body = {
-        username: tEmail,
-        password: tPW,
+  const history = useHistory();
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const body = { username: email, password: password };
+      const response = await fetch("http://localhost:3001/createLogin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (response.ok) {
+        console.log("account created successfully"); 
+        history.push('/buildprofile');
+      } else {
+        console.log(response.status);
+        console.log("nope... suck it up and start debugging again");
+      }
+    } 
+    catch (err) 
+    {
+      console.error("create Account", err);
+      return err.status;
     }
-
-    try{
-        const response = await fetch("/createLogin", {
-            method: "POST",
-            body: JSON.stringify(body),
-        });
-        if (response.ok) {
-            console.log("account created successfully");
-            console.log(response.json());
-        } else {
-            console.log(response.status);
-        }
-        return response.ok;
-    } catch (err) {
-        console.error("create Account", err);
-        return err.status;
-    }
-
-    //POST /createLogin
-    
-  }
-
-    useEffect(() => {
-        handleSubmit();
-    }, []);
-
+  };
+  
   return (
     <div>
       <div className="navbar">
@@ -54,7 +46,7 @@ export default function CreateAccount() {
       </div>
       <h3 className="mt-5">Create a New Account</h3>
       <div className="Login">
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit} action="#">
           <Form.Group size="lg" controlId="email">
             <Form.Label>Email</Form.Label>
             <Form.Control
@@ -72,14 +64,18 @@ export default function CreateAccount() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </Form.Group>
-          <Link to="/buildprofile">
-            <Button className="button" variant="info" block size="lg" type="submit" disabled={!validateForm()}>
-                Sign Up
-            </Button>
-          </Link>
+          
+          <Form.Group role="form">
+              <Button className="button" variant="info" block size="lg" type="submit" 
+                disabled={!validateForm()}>
+                  Sign Up
+              </Button>
+          </Form.Group>          
           <Link to="/login" className="link">I have an account</Link>
         </Form>
       </div>
     </div>
-  );
-}
+  ); 
+};
+
+export default CreateAccount;

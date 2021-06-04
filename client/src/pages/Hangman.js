@@ -122,10 +122,8 @@ class Hangman extends Component {
     return (
       <div>
         <div className="navbar">
-                <img src={Logo} alt="" height="30" className="logo"></img>
-                <img src={BellIcon} alt="" height="25" className="bellIcon"></img>
-                <Link to="/login"><img src={UserIcon} alt="" height="25" className="userIcon"></img></Link>
-            </div>
+                <Link to="/"><img src={Logo} alt="" height="30" className="logo"></img></Link>
+        </div>
 
             <button
             className="navbar-toggler sr-only"
