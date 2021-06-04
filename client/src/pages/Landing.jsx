@@ -1,11 +1,9 @@
 /* code by Vanessa and Naoya*/
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Logo from '../assets/logo.png'
-import BellIcon from '../assets/bell_icon.png';
 import "./Landing.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Popup from 'reactjs-popup';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -15,15 +13,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
         <div>
         <div className="navbar">
                 <img src={Logo} alt="" height="30" className="logo"></img>
-                <Popup
-                    trigger={
-                        <img src={BellIcon} alt="" height="25" className="bellIcon"></img>
-                    }
-                    position='bottom right'
-                    closeOnDocumentClick
-                >
-
-                </Popup>
             </div>
             <div className="container content">
                 <div className="row">

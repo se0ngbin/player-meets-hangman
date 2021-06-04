@@ -30,7 +30,7 @@ const CreateAccount = ({setAuth} ) => {
       if (result.accessToken) {
         localStorage.setItem("token", result.accessToken);
         console.log("account created successfully"); 
-        setAuth(true);
+        setAuth(true, email);
         history.push('/buildprofile');
       } else {
         setAuth(false);

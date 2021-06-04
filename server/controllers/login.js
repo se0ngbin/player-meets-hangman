@@ -62,6 +62,7 @@ export const createLogin = asyncHandler(async (req, res) => {
     }
 
     res.status(200).json({
+        id: userid,
         accessToken : jwt.sign({ username, userid }, jwtKey, { expiresIn : '1d' })
     });
 });
@@ -80,6 +81,7 @@ export const login = asyncHandler(async (req, res) => {
     const userid = user.id;
 
     res.status(200).json({
+        id : userid,
         accessToken : jwt.sign({ username, userid }, jwtKey, { expiresIn : '1d' })
     });
 });
