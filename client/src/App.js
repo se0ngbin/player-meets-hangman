@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import CreateAccount from "./pages/CreateAccount";
 import BuildProfile from "./pages/BuildProfile";
 import HangmanGame from "./pages/Hangman";
+import Landing from "./pages/Landing";
 import './App.css';
 
 
@@ -21,6 +22,7 @@ class App extends Component {
             <Route exact path="/" component={Homepage} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/hangmangame" component={HangmanGame} />
+            <Route exact path="/landing" component={Landing} />
             <Route exact path="/createaccount" component={CreateAccount} />
             <Route exact path="/buildprofile" component={BuildProfile} />
           </Switch>
