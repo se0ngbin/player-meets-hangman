@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Logo from '../assets/logo.png'
 import BellIcon from '../assets/bell_icon.png';
 import UserIcon from '../assets/user_icon.png';
@@ -32,7 +32,8 @@ const feedPhotos = [
     Girl7,
 ];
 
-const Homepage = () => {
+const Homepage = ( {setAuth} ) => {
+    const history = useHistory();
     const [currIndex, setCurrIndex] = useState(0);
     const [currProfile, setCurrProfile] = useState(userList[0]);
     const [currPhoto, setCurrPhoto] = useState(feedPhotos[0]);
@@ -104,6 +105,12 @@ const Homepage = () => {
         return userList.find((user) => {
             return user.userName === name;
         })
+    }
+
+    function logOut() {
+        console.log("called");
+        setAuth(false);
+        history.push('/');
     }
 
     function handleChooseUser(name) {
@@ -194,8 +201,8 @@ const Homepage = () => {
                         </div>
                         <div className="selfInfo1">David Holmwood (23)</div>
                         <div className="selfInfo2">San Francisco, California</div>
-                        <div className="menu2">
-                            <Link to="/login"><div className="menu-item2">Log Out</div></Link>
+                        <div className="menu2" onClick={logOut}>
+                            <div className="menu-item2"><Button variant="link" onClick={logOut}> Log Out </Button></div>
                         </div>
                     </div>
                 </Popup>

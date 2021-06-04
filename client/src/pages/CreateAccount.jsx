@@ -24,16 +24,20 @@ const CreateAccount = ({setAuth} ) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
-      if (response.ok) {
+      const result = await response.json();
+      
+      console.log(result);
+      if (result.accessToken) {
+        localStorage.setItem("token", result.accessToken);
         console.log("account created successfully"); 
         setAuth(true);
         history.push('/buildprofile');
       } else {
-        console.log(response.status);
         setAuth(false);
+        console.log(result.status);
         console.log("nope... suck it up and start debugging again");
       }
-    } 
+    }
     catch (err) 
     {
       console.error("create Account", err);

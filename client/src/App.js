@@ -27,7 +27,7 @@ function App() {
                           (<Login {...props} setAuth={setAuth} />) : (<Redirect to="/" />)}/>
               <Route exact path="/landing" component={Landing} />
               <Route exact path="/hangmangame" component={HangmanGame} />
-              <Route exact path="/buildprofile" component={BuildProfile} />
+              <Route exact path="/buildprofile" render={(props) => (<BuildProfile {...props} setAuth={setAuth}/>)} />
               <Route exact path="/createaccount" render={(props) => (<CreateAccount {...props} setAuth={setAuth}/>)}/>
             </Switch>
           </Router>
