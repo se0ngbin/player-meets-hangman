@@ -3,22 +3,44 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import "./Login.css";
 import Logo from '../assets/logo.png'
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 
 export default function BuildProfile() {
+  const history = useHistory();
+  const [flname, setName] = useState("");
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("");
   const [city, setCity] = useState("");
   const [bio, setBio] = useState("");
   const [genderPref, setGenderPref] = useState("");
   const [funFact, setFunFact] = useState("");
+  // TODO: city, funfact not dealt with
 
-
-
-  function handleSubmit(event) {
-    event.preventDefault();
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const body = { name: flname, birthdate: age, bio: bio, gender: gender, 
+        gendersinterestedin: genderPref};
+      const response = await fetch("http://localhost:3001/user", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      if (response.ok) {
+        console.log("account created successfully"); 
+        history.push('/');
+      } else {
+        console.log(response.status);
+        console.log("nope... suck it up and start debugging again");
+      }
+    } 
+    catch (err) 
+    {
+      console.error("create Account", err);
+      return err.status;
+    }
+  };
 
   return (
     <div>
@@ -27,13 +49,16 @@ export default function BuildProfile() {
       </div>
       <div className="Login">
         <Form onSubmit={handleSubmit}>
-          <Form.Group size="lg" controlId="age">
-            <Form.Label>Profile Picture</Form.Label>
-            <input type="file" />
+        <Form.Group size="lg" controlId="flname">
+            <Form.Label>Name</Form.Label>
+            <Form.Control
+              autoFocus
+              value={flname}
+              onChange={(e) => setName(e.target.value)}
+            />
           </Form.Group>
-          
           <Form.Group size="lg" controlId="age">
-            <Form.Label>Age</Form.Label>
+            <Form.Label>Birthdate (YYYY-MM-DD)</Form.Label>
             <Form.Control
               autoFocus
               value={age}
@@ -62,7 +87,7 @@ export default function BuildProfile() {
             />
           </Form.Group>
           <Form.Group size="lg" controlId="genderPref">
-            <Form.Label>Whoa are you interested in?</Form.Label>
+            <Form.Label>Which genders are you interested in?</Form.Label>
             <Form.Control
               value={genderPref}
               onChange={(e) => setGenderPref(e.target.value)}
@@ -75,12 +100,12 @@ export default function BuildProfile() {
               onChange={(e) => setFunFact(e.target.value)}
             />
           </Form.Group>
-          <Link to="/">
+
+          <Form.Group role="form">
             <Button className="button" variant="info" block size="lg" type="submit">
-                Start Matching!
+              Start Matching!
             </Button>
-          </Link>
-          
+          </Form.Group>                  
         </Form>
       </div>
     </div>
