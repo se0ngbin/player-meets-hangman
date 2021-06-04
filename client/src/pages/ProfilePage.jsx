@@ -13,35 +13,44 @@ import Button from 'react-bootstrap/Button'
 const userList = require('./userList');
 
 const userSelf = {
-    "userName": "David Holmwood",
-    "userAge": "23",
-    "userCity": "San Francisco",
+    "userName": "Tickle Radish",
+    "userAge": "18",
+    "userCity": "LA",
     "userState": "California",
-    "userBio": "Curabitur et sodales ante. Ut vitae tincidunt tellus, et laoreet orci. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
-    "userInterest": "Birdwatching",
-    "userInstagram": "@davidig"
+    "userBio": "student",
+    "userInterest": "I am cool",
+    "userInstagram": "radishes@gmail.com"
 };
 
-const Profile = () => {
+const Profile = (currentuser) => {
     const [popupShow, setPopupShow] = useState(false);
     const [matchedUser, setMatchedUser] = useState({});
+    const [currProfile, setCurrProfile] = useState(userList[0]);
+    let url = `http://localhost:3001/profile/${currentuser}`
 
+    // TODO: for some reason, this it is not recognizing currentuser as a string but as a object
     const fetchFeed = async () => {
 
         // Trying to GET random profile. Worked before now it doesn't work :(
         // but GET requests worked when I tried to get "/genders" or "/interests"
 
         try {
-            const response = await fetch("http://localhost:3001/profile/random", {
+            const response = await fetch(url, {
                 method: "GET",
+                headers: { "Content-Type": "application/json",
+                            "Authorization": 'Bearer ' + localStorage.getItem("token") },
             });
             if (response.ok) {
                 console.log("profile get successfully");
                 const data = await response.json();
                 console.log(data);
+                setCurrProfile(data);
             } else {
                 console.log("didn't work.");
                 console.log(response.status);
+                console.log(currentuser)
+                const data = await response.json()
+                console.log(data);
             }
             return response.ok;
         } catch (err) {
@@ -81,13 +90,11 @@ const Profile = () => {
             You matched with {match}. See their profile now!
         </div>
     );
-    
     function MatchPopup(props) {
         var head = props.user.userName;
         const handleOnClick = () => {
             props.onHide(); 
         };
-    
         return (
           <Modal
             {...props}
@@ -105,16 +112,10 @@ const Profile = () => {
                     Age: {props.user.userAge}
                 </div>
                 <div className="popUpContent">
-                    Location: {props.user.userCity}, {props.user.userState}
-                </div>
-                <div className="popUpContent">
                     Bio: {props.user.userBio}
                 </div>
                 <div className="popUpContent">
-                    Interest: {props.user.userInterest}
-                </div>
-                <div className="popUpContent">
-                    Instagram Account: {props.user.userInstagram}
+                    Email Address: {props.user.userInstagram}
                 </div>
             </Modal.Body>
             <Modal.Footer>
@@ -124,7 +125,6 @@ const Profile = () => {
         );
       }
 
-    
     return (
         <div>
             <div className="navbar">
@@ -152,21 +152,17 @@ const Profile = () => {
                     closeOnDocumentClick
                 >
                     <div className="profilePopup">
-                        <div className="selfPic">
-                            <img src={Guy} alt="" height="100%"/>
-                        </div>
-                        <div className="selfInfo1">David Holmwood (23)</div>
-                        <div className="selfInfo2">San Francisco, California</div>
+                        <div className="selfInfo1">Seongbin Park (18)</div>
+                        <div className="selfInfo2">LA, California</div>
                         <div className="menu2">
                             <Link to="/login"><div className="menu-item2">Log Out</div></Link>
                         </div>
                     </div>
                 </Popup>
-                
+
             </div>
             <div className="body2">
                 <div className="selfPic">
-                    <img src={Guy} alt="" height="100%"/>
                 </div>
                 <div className="popUpContent">  
                     Name: {userSelf.userName}
@@ -181,7 +177,7 @@ const Profile = () => {
                     Bio: {userSelf.userBio}
                 </div>
                 <div className="popUpContent">
-                    Interest: {userSelf.userInterest}
+                    Fun Fact: {userSelf.userInterest}
                 </div>
                 <div className="popUpContent">
                     Instagram Account: {userSelf.userInstagram}

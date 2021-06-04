@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Logo from '../assets/logo.png'
 import BellIcon from '../assets/bell_icon.png';
 import UserIcon from '../assets/user_icon.png';
@@ -32,35 +32,54 @@ const feedPhotos = [
     Girl7,
 ];
 
-const Homepage = () => {
+
+const Homepage = ( {setAuth} ) => {
+    const history = useHistory();
     const [currIndex, setCurrIndex] = useState(0);
     const [currProfile, setCurrProfile] = useState(userList[0]);
     const [currPhoto, setCurrPhoto] = useState(feedPhotos[0]);
     const [endOfFeed, setEndOfFeed] = useState(false);
     const [popupShow, setPopupShow] = useState(false);
+    const [matchList, setMatchList] = useState({});
     const [matchedUser, setMatchedUser] = useState({});
 
-    // TODO: test whether the fetching data function works
-    // once data returned, replace the static variables beneath
+    const fetchMatches = async () => { 
+        try {
+        const response = await fetch("http://localhost:3001/matches", {
+            method: "GET",
+            headers: { "Content-Type": "application/json",
+                          "Authorization": 'Bearer ' + localStorage.getItem("token") }
+        });
+        if (response.ok) {
+            console.log("profile get successfully");
+            const data = await response.json();
+            console.log(data);
+            setMatchList(data);
+        } else {
+            console.log("didn't work.");
+            console.log(response.status);
+        }
+    } catch (err) {
+        console.error("GET random profile ", err);
+        return err.status;
+    }
+    }
 
     const fetchFeed = async () => {
-
-        // Trying to GET random profile. Worked before now it doesn't work :(
-        // but GET requests worked when I tried to get "/genders" or "/interests"
-
         try {
             const response = await fetch("http://localhost:3001/profile/random", {
-                method: "GET",
+                method: "GET"
             });
             if (response.ok) {
                 console.log("profile get successfully");
                 const data = await response.json();
                 console.log(data);
+                setCurrProfile(data);
+                console.log(matchList);
             } else {
                 console.log("didn't work.");
                 console.log(response.status);
             }
-            return response.ok;
         } catch (err) {
             console.error("GET random profile ", err);
             return err.status;
@@ -69,20 +88,47 @@ const Homepage = () => {
 
     useEffect(() => {
         fetchFeed();
+        fetchMatches();
     }, []);
 
-    const handleLike = () => {
-        if(currIndex < 6) {
+    const handleLike = async () => {
+        try {
+            const body = { userid: currProfile.id };
+            const response = await fetch("http://localhost:3001/likes", {
+              method: "POST",
+              headers: { "Content-Type": "application/json",
+                          "Authorization": 'Bearer ' + localStorage.getItem("token") },
+              body: JSON.stringify(body),
+            });
+            if (response.ok) {
+              console.log("liked successfully"); 
+              console.log(response.status);
+              fetchFeed();
+            } else {
+              console.log(response.status);
+              console.log("nope... suck it up and start debugging again");
+            }
+        } 
+        catch (err) 
+        {
+            console.error("like", err);
+            return err.status;
+        }
+
+        /*if(currIndex < 6) {
             setCurrProfile(userList[currIndex + 1]);
             setCurrPhoto(feedPhotos[currIndex + 1]);
             setCurrIndex(currIndex + 1);
         }
         else {
             setEndOfFeed(true);
-        }
+        }*/
+        setCurrPhoto(feedPhotos[currIndex + 1]);
     }
 
     const handleDislike = () => {
+        fetchFeed();
+        /*
         if(currIndex < 6) {
             setCurrProfile(userList[currIndex + 1]);
             setCurrPhoto(feedPhotos[currIndex + 1]);
@@ -90,20 +136,32 @@ const Homepage = () => {
         }
         else {
             setEndOfFeed(true);
-        }
+        }*/
     }
 
-    const matches = [
-        "Alexandra",
-        "Bella",
-        "Cassandra",
-        "Dory"
-    ];
+    function calculateAge(dateString) {
+        var today = new Date();
+        var birthDate = new Date(dateString);
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    }
+
+    
 
     function findUser(name) {
         return userList.find((user) => {
             return user.userName === name;
         })
+    }
+
+    function logOut() {
+        console.log("called");
+        setAuth(false);
+        history.push('/');
     }
 
     function handleChooseUser(name) {
@@ -113,11 +171,18 @@ const Homepage = () => {
     }
 
 
-    const match_notifs = matches.map( (match, index) =>
+    const match_notifs = () => {
+        // I give up... TODO: implement match notifications (the matches are stored in matchList)
+        for (var user in matchList) {
+            console.log(user);
+        }
+        /*
         <div className="menu-item1" onClick={() => handleChooseUser(match)}>
             You matched with {match}. See their profile now!
         </div>
-    );
+        */
+    }
+    /*
     
     function MatchPopup(props) {
         var head = props.user.userName;
@@ -160,7 +225,7 @@ const Homepage = () => {
           </Modal>
         );
       }
-
+*/
     
     return (
         <div>
@@ -189,15 +254,15 @@ const Homepage = () => {
                     closeOnDocumentClick
                 >
                     <div className="profilePopup">
-                        <Link to="/profile">
+                        {/* <Link to="/profile">
                             <div className="selfPic">
-                                <img src={Guy} alt="" height="100%"/>
+                                
                             </div>
-                        </Link>
-                        <div className="selfInfo1">David Holmwood (23)</div>
-                        <div className="selfInfo2">San Francisco, California</div>
-                        <div className="menu2">
-                            <Link to="/login"><div className="menu-item2">Log Out</div></Link>
+                        </Link> */}
+                        <div className="selfInfo1">Tickle Radish (18)</div>
+                        <div className="selfInfo2">LA, California</div>
+                        <div className="menu2" onClick={logOut}>
+                            <div className="menu-item2"><Button variant="link" onClick={logOut}> Log Out </Button></div>
                         </div>
                     </div>
                 </Popup>
@@ -222,8 +287,8 @@ const Homepage = () => {
                 </div>
                 {!endOfFeed ? (
                     <div className="userInfo">
-                        <div className="title">{currProfile.userName}, {currProfile.userAge}</div>
-                        <div className="subtitle">{currProfile.userCity}, {currProfile.userState}</div>
+                        <div className="title">{currProfile.name}, {calculateAge(currProfile.birthdate)}</div>
+                        <div className="subtitle">{currProfile.bio}</div>
                     </div>
                 ) : null}
                 
@@ -233,11 +298,6 @@ const Homepage = () => {
                     </div>
                 </Link>
             </div>
-            <MatchPopup
-                show={popupShow}
-                onHide={() => setPopupShow(false)}
-                user={matchedUser}
-            />
         </div>
     );
 }

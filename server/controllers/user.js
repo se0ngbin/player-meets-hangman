@@ -3,8 +3,10 @@ import createError from 'http-errors';
 import pg from 'pg';
 import fs from 'fs';
 import util from 'util';
+import path from 'path';
 
 import { StatusCodes } from 'http-status-codes';
+import { v4 as uuidv4 } from 'uuid';
 import { connectionString } from '../constants.js';
 
 const pgPool = new pg.Pool({ connectionString });
@@ -38,9 +40,11 @@ async function executeArrayQuery(qstring, getQueries, elementToValues, req, res)
 // returns a user login object or null
 //
 
-async function getPhotoData_base64(path) {
+async function getPhotoData(path, encoding) {
     const photo_buffer = await readFile(path);
-    return photo_buffer.toString('base64');
+
+    // console.log(photo_buffer.toString(encoding));
+    return photo_buffer.toString(encoding);
 }
 
 async function getPhotos(userid) {
@@ -55,10 +59,14 @@ async function getPhotos(userid) {
     const query_result = await pgPool.query(query);
     const photos = query_result.rows;
 
-    return photos.map((acc, photo) => {
-        acc.push({ id: photo.id, data: getPhotoData_base64(photo.path) });
-        return acc;
-    }, []);
+    let result = []
+    for (let photo of photos) {
+        let photoData = await getPhotoData(photo.path, 'base64');
+
+        result.push({ id: photo.id, data: photoData });
+    }
+
+    return result;
 }
 
 async function getProfile(username) {
@@ -71,6 +79,7 @@ async function getProfile(username) {
         ',
         values: [username]
     };
+    
     const users_result = await pgPool.query(users_query);
     if (users_result.rowCount == 0) 
         throw createError(StatusCodes.NOT_FOUND, `User "${username}" does not exist`);
@@ -250,8 +259,37 @@ export const deleteUserQuestionAnswers = asyncHandler(async (req, res) => {
 
 
 // photos stuff
-// TODO
-//
+
+export const addPhotos = asyncHandler(async (req, res) => {
+    const qstring = '\
+    INSERT INTO "Photo" \
+    (id, userid, path) \
+    values \
+    ($1, $2, $3) \
+    ';
+
+    const userId = res.locals.decoded.userid;
+
+    const getFileData = x => x;
+    const uploadPhoto = (fileData) => {
+        let  uuid = uuidv4();
+        let  photoPath = path.join("photos", uuid);
+
+        fs.writeFileSync(photoPath, fileData);
+
+        return [uuid, userId, photoPath];
+    }
+    
+    await executeArrayQuery(
+        qstring,
+        (req, _res) => req.body.map(getFileData),
+        (_req, _res, fileData) => uploadPhoto(fileData),
+        req,
+        res
+    );
+
+    res.status(200).json();
+});
 
 
 // contact info

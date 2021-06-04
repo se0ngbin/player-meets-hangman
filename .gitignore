@@ -122,3 +122,4 @@ dist
 server/secret.js
 tags
 server/constants.js
+photos/
