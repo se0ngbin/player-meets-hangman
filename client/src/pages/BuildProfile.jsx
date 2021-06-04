@@ -3,22 +3,48 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import "./Login.css";
 import Logo from '../assets/logo.png'
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 
-export default function BuildProfile() {
+export default function BuildProfile({setAuth}) {
+  const history = useHistory();
+  const [flname, setName] = useState("");
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("");
   const [city, setCity] = useState("");
   const [bio, setBio] = useState("");
   const [genderPref, setGenderPref] = useState("");
   const [funFact, setFunFact] = useState("");
+  // TODO: city, funfact not dealt with
 
-
-
-  function handleSubmit(event) {
-    event.preventDefault();
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      // TODO: fix gender
+      const body = { name: flname, birthdate: age, bio: bio, gender: '1', 
+        gendersinterestedin: '01'};
+      const response = await fetch("http://localhost:3001/user", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json",
+                    "Authorization": 'Bearer ' + localStorage.getItem("token") },
+        body: JSON.stringify(body),
+      });
+      if (response.ok) {
+        console.log("profile built successfully"); 
+        setAuth(true);
+        history.push('/');
+      } else {
+        console.log(response.status);
+        console.log("nope... suck it up and start debugging again");
+        setAuth(false);
+      }
+    } 
+    catch (err) 
+    {
+      console.error("create Account", err);
+      return err.status;
+    }
+  };
 
   return (
     <div>
@@ -31,9 +57,16 @@ export default function BuildProfile() {
             <Form.Label>Profile Picture</Form.Label>
             <input type="file" />
           </Form.Group>
-          
+          <Form.Group size="lg" controlId="flname">
+            <Form.Label>Name</Form.Label>
+            <Form.Control
+              autoFocus
+              value={flname}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </Form.Group>
           <Form.Group size="lg" controlId="age">
-            <Form.Label>Age</Form.Label>
+            <Form.Label>Birthdate (YYYY-MM-DD)</Form.Label>
             <Form.Control
               autoFocus
               value={age}
@@ -42,10 +75,18 @@ export default function BuildProfile() {
           </Form.Group>
           <Form.Group size="lg" controlId="gender">
             <Form.Label>Gender</Form.Label>
-            <Form.Control
+            <Form.Control 
+              as="select" custom
               value={gender}
               onChange={(e) => setGender(e.target.value)}
-            />
+            >
+              <option>Male</option>
+              <option>Female</option>
+              <option>M2F Transsexual</option>
+              <option>F2M Transsexual</option>
+              <option>Non-binary</option>
+              <option>Not applicable</option>
+            </Form.Control>
           </Form.Group>
           <Form.Group size="lg" controlId="city">
             <Form.Label>City</Form.Label>
@@ -62,11 +103,19 @@ export default function BuildProfile() {
             />
           </Form.Group>
           <Form.Group size="lg" controlId="genderPref">
-            <Form.Label>Whoa are you interested in?</Form.Label>
-            <Form.Control
+            <Form.Label>Which genders are you interested in?</Form.Label>
+            <Form.Control 
+              as="select" multiple
               value={genderPref}
-              onChange={(e) => setGenderPref(e.target.value)}
-            />
+              onChange={(e) => setGenderPref(e.target.selectedOptions)}
+            >
+              <option>Male</option>
+              <option>Female</option>
+              <option>M2F Transsexual</option>
+              <option>F2M Transsexual</option>
+              <option>Non-binary</option>
+              <option>Not-applicable</option>
+            </Form.Control>
           </Form.Group>
           <Form.Group size="lg" controlId="funFact">
             <Form.Label>One interesting thing about yourself</Form.Label>
@@ -75,12 +124,11 @@ export default function BuildProfile() {
               onChange={(e) => setFunFact(e.target.value)}
             />
           </Form.Group>
-          <Link to="/">
+          <Form.Group role="form">
             <Button className="button" variant="info" block size="lg" type="submit">
-                Start Matching!
+              Start Matching!
             </Button>
-          </Link>
-          
+          </Form.Group> 
         </Form>
       </div>
     </div>
