@@ -5,8 +5,8 @@
         "userCity": "Los Angeles",
         "userState": "California",
         "userBio": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec placerat in dolor et semper. Maecenas ut ullamcorper quam. Ut dignissim libero rhoncus orci finibus, id varius est lobortis.",
-        "interest": "Lockpicking",
-        "instagram": "@whichalexandra"
+        "userInterest": "Lockpicking",
+        "userInstagram": "@whichalexandra"
         
     },
     {
@@ -15,8 +15,8 @@
         "userCity": "San Francisco",
         "userState": "California",
         "userBio": "Curabitur sollicitudin rutrum tellus, vitae scelerisque enim tincidunt et. Donec non quam ut tortor dapibus fringilla at eu sem.",
-        "interest": "Flag football",
-        "instagram": "@bellafella"
+        "userInterest": "Flag football",
+        "userInstagram": "@bellafella"
     },
     {
         "userName": "Cassandra",
@@ -24,8 +24,8 @@
         "userCity": "Newark",
         "userState": "New Jersey",
         "userBio": "In lorem libero, gravida sit amet nisi at, malesuada suscipit nisl. Vivamus arcu ex, blandit eu velit sit amet, mattis scelerisque nisl. Etiam nec aliquet nulla. Quisque turpis magna, sollicitudin eget nisi at, fermentum condimentum enim.",
-        "interest": "Rock painting",
-        "instagram": "@cassandrasandra"
+        "userInterest": "Rock painting",
+        "userInstagram": "@cassandrasandra"
     },
     {
         "userName": "Dory",
@@ -33,8 +33,8 @@
         "userCity": "Aurora",
         "userState": "Colorado",
         "userBio": "Curabitur et sodales ante. Ut vitae tincidunt tellus, et laoreet orci. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
-        "interest": "Leather tooling",
-        "instagram": "@dorystory"
+        "userInterest": "Leather tooling",
+        "userInstagram": "@dorystory"
     },
     {
         "userName": "Elaine",
@@ -42,8 +42,8 @@
         "userCity": "Virginia Beach",
         "userState": "Virginia",
         "userBio": "Nulla quis lobortis nisi, at efficitur lorem. Morbi ultrices iaculis volutpat. Integer ultrices massa ac augue gravida, at vulputate magna pretium.",
-        "interest": "Renaissance fairs",
-        "instagram": "@elainedomain"
+        "userInterest": "Renaissance fairs",
+        "userInstagram": "@elainedomain"
     },
     {
         "userName": "Frances",
@@ -51,8 +51,8 @@
         "userCity": "Lubbock",
         "userState": "Texas",
         "userBio": "Sed in viverra mauris, id ornare ante. Maecenas elementum pretium libero imperdiet posuere.",
-        "interest": "Learn to be a mime",
-        "instagram": "@francescanvas"
+        "userInterest": "Learn to be a mime",
+        "userInstagram": "@francescanvas"
     },
     {
         "userName": "Grace",
@@ -60,7 +60,7 @@
         "userCity": "Tulsa",
         "userState": "Oklahoma",
         "userBio": "Mauris porta pellentesque turpis nec rhoncus. Ut quis est diam. Nulla in justo placerat, dictum diam at, hendrerit ipsum. Sed vel elementum odio. Nunc nec dignissim nibh, vel elementum ipsum.",
-        "interest": "Sea glass collecting",
-        "instagram": "@gracespace"
+        "userInterest": "Sea glass collecting",
+        "userInstagram": "@gracespace"
     }
 ]

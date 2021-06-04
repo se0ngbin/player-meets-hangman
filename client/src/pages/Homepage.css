@@ -147,7 +147,7 @@
     margin: auto;
     background: rgb(255, 255, 255);
     width: 12rem;
-    height: 16rem;
+    height: 14rem;
     padding: 1rem;
     box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.25);
     border-radius: 1rem;
@@ -161,15 +161,14 @@
 .menu-item2 {
     cursor: pointer;
     height: 2.5rem;
-    border-bottom: 1px solid rgb(187, 187, 187);
+    border-top: 1px solid rgb(187, 187, 187);
     padding-top: 0.5rem;
+    color: black;
+    margin-top: 1rem;
+    
 }
 .menu-item2:hover {
     color: #2980b9;
-}
-
-.last-item {
-    border-bottom: none;
 }
 
 .selfPic {
@@ -190,9 +189,6 @@
     margin-bottom: 0.5rem;
 }
 
-.links {
-    color: black;
-}
 
 .endOfFeedText {
     margin-top: 5rem;
@@ -202,6 +198,10 @@
 .noMoreText {
     font-size: 12px;
     margin-top: 1rem;
+}
+
+.popUpContent {
+    margin-bottom: 1rem;
 }
 
 

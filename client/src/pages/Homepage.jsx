@@ -17,7 +17,8 @@ import CrossIcon from '../assets/cross_icon.png';
 import HeartIcon from '../assets/heart_icon.png';
 import Popup from 'reactjs-popup';
 import HangmanIcon from '../assets/hangman_game.png';
-// import Button from 'react-bootstrap/Button'
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button'
 
 const userList = require('./userList');
 
@@ -96,27 +97,33 @@ const Homepage = () => {
         "Alexandra",
         "Bella",
         "Cassandra",
-        "Dory",
+        "Dory"
     ];
 
-    const match_notifs = matches.map( (match) =>
-        <div className="menu-item1">
+    function findUser(name) {
+        return userList.find((user) => {
+            return user.userName === name;
+        })
+    }
+
+    function handleChooseUser(name) {
+        let userObj = findUser(name);
+        setMatchedUser(userObj);
+        setPopupShow(true);
+    }
+
+
+    const match_notifs = matches.map( (match, index) =>
+        <div className="menu-item1" onClick={() => handleChooseUser(match)}>
             You matched with {match}. See their profile now!
         </div>
     );
-
+    
     function MatchPopup(props) {
-        var head = "";
-        var body = "";
-
-        head = props.;
-        body = "You can find your documents in your profile."
+        var head = props.user.userName;
         const handleOnClick = () => {
             props.onHide(); 
-            if (props.hassuccess) {
-                history.push("/");
-            }
-        }
+        };
     
         return (
           <Modal
@@ -131,12 +138,24 @@ const Homepage = () => {
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <p>
-                {body}
-              </p>
+                <div className="popUpContent">
+                    Age: {props.user.userAge}
+                </div>
+                <div className="popUpContent">
+                    Location: {props.user.userCity}, {props.user.userState}
+                </div>
+                <div className="popUpContent">
+                    Bio: {props.user.userBio}
+                </div>
+                <div className="popUpContent">
+                    Interest: {props.user.userInterest}
+                </div>
+                <div className="popUpContent">
+                    Instagram Account: {props.user.userInstagram}
+                </div>
             </Modal.Body>
             <Modal.Footer>
-              <Button onClick={handleOnClick}>Close</Button>
+              <Button variant="info" onClick={handleOnClick}>Close</Button>
             </Modal.Footer>
           </Modal>
         );
@@ -176,8 +195,7 @@ const Homepage = () => {
                         <div className="selfInfo1">David Holmwood (23)</div>
                         <div className="selfInfo2">San Francisco, California</div>
                         <div className="menu2">
-                            <div className="menu-item2">Past Matches</div>
-                            <Link to="/login"><div className="menu-item2 last-item links">Log Out</div></Link>
+                            <Link to="/login"><div className="menu-item2">Log Out</div></Link>
                         </div>
                     </div>
                 </Popup>
@@ -214,10 +232,10 @@ const Homepage = () => {
                 </Link>
             </div>
             <MatchPopup
-                show={true}
+                show={popupShow}
                 onHide={() => setPopupShow(false)}
-                value={matchedUser}
-            />)
+                user={matchedUser}
+            />
         </div>
     );
 }
