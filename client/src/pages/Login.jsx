@@ -21,8 +21,28 @@ export default function Login() {
     return email.length > 0 && password.length > 0;
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
+
+    try {
+      const body = { email: 'vanessatu@g.ucla.edu', password: '88888888' };
+      const response = await fetch("http://localhost:3001/login", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+      });
+      let result = await response.json();
+      console.log(result);
+      if (response.ok) {
+          console.log("login successfully!")
+          return response.ok;
+      }
+  } catch (err) {
+      console.error("sign in", err);
+  }
+
   }
 
   return (
