@@ -32,6 +32,7 @@ const feedPhotos = [
     Girl7,
 ];
 
+
 const Homepage = ( {setAuth} ) => {
     const history = useHistory();
     const [currIndex, setCurrIndex] = useState(0);
@@ -39,26 +40,46 @@ const Homepage = ( {setAuth} ) => {
     const [currPhoto, setCurrPhoto] = useState(feedPhotos[0]);
     const [endOfFeed, setEndOfFeed] = useState(false);
     const [popupShow, setPopupShow] = useState(false);
+    const [matchList, setMatchList] = useState({});
     const [matchedUser, setMatchedUser] = useState({});
 
-    // TODO: test whether the fetching data function works
-    // once data returned, replace the static variables beneath
+    const fetchMatches = async () => { 
+        try {
+        const response = await fetch("http://localhost:3001/matches", {
+            method: "GET",
+            headers: { "Content-Type": "application/json",
+                          "Authorization": 'Bearer ' + localStorage.getItem("token") }
+        });
+        if (response.ok) {
+            console.log("profile get successfully");
+            const data = await response.json();
+            console.log(data);
+            setMatchList(data);
+        } else {
+            console.log("didn't work.");
+            console.log(response.status);
+        }
+    } catch (err) {
+        console.error("GET random profile ", err);
+        return err.status;
+    }
+    }
 
     const fetchFeed = async () => {
         try {
             const response = await fetch("http://localhost:3001/profile/random", {
-                method: "GET",
+                method: "GET"
             });
             if (response.ok) {
                 console.log("profile get successfully");
                 const data = await response.json();
                 console.log(data);
                 setCurrProfile(data);
+                console.log(matchList);
             } else {
                 console.log("didn't work.");
                 console.log(response.status);
             }
-            return response.ok;
         } catch (err) {
             console.error("GET random profile ", err);
             return err.status;
@@ -67,6 +88,7 @@ const Homepage = ( {setAuth} ) => {
 
     useEffect(() => {
         fetchFeed();
+        fetchMatches();
     }, []);
 
     const handleLike = async () => {
@@ -93,7 +115,6 @@ const Homepage = ( {setAuth} ) => {
             return err.status;
         }
 
-        // TODO: fix the 6 to numbers of people left in database
         /*if(currIndex < 6) {
             setCurrProfile(userList[currIndex + 1]);
             setCurrPhoto(feedPhotos[currIndex + 1]);
@@ -129,6 +150,8 @@ const Homepage = ( {setAuth} ) => {
         return age;
     }
 
+    
+
     function findUser(name) {
         return userList.find((user) => {
             return user.userName === name;
@@ -148,11 +171,18 @@ const Homepage = ( {setAuth} ) => {
     }
 
 
-    const match_notifs = matches.map( (match, index) =>
+    const match_notifs = () => {
+        // I give up... TODO: implement match notifications (the matches are stored in matchList)
+        for (var user in matchList) {
+            console.log(user);
+        }
+        /*
         <div className="menu-item1" onClick={() => handleChooseUser(match)}>
             You matched with {match}. See their profile now!
         </div>
-    );
+        */
+    }
+    /*
     
     function MatchPopup(props) {
         var head = props.user.userName;
@@ -195,7 +225,7 @@ const Homepage = ( {setAuth} ) => {
           </Modal>
         );
       }
-
+*/
     
     return (
         <div>
@@ -226,11 +256,11 @@ const Homepage = ( {setAuth} ) => {
                     <div className="profilePopup">
                         <Link to="/profile">
                             <div className="selfPic">
-                                <img src={Guy} alt="" height="100%"/>
+                                
                             </div>
                         </Link>
-                        <div className="selfInfo1">David Holmwood (23)</div>
-                        <div className="selfInfo2">San Francisco, California</div>
+                        <div className="selfInfo1">Tickle Radish (18)</div>
+                        <div className="selfInfo2">LA, California</div>
                         <div className="menu2" onClick={logOut}>
                             <div className="menu-item2"><Button variant="link" onClick={logOut}> Log Out </Button></div>
                         </div>
@@ -268,11 +298,6 @@ const Homepage = ( {setAuth} ) => {
                     </div>
                 </Link>
             </div>
-            <MatchPopup
-                show={popupShow}
-                onHide={() => setPopupShow(false)}
-                user={matchedUser}
-            />
         </div>
     );
 }

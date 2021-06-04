@@ -79,6 +79,7 @@ async function getProfile(username) {
         ',
         values: [username]
     };
+    
     const users_result = await pgPool.query(users_query);
     if (users_result.rowCount == 0) 
         throw createError(StatusCodes.NOT_FOUND, `User "${username}" does not exist`);

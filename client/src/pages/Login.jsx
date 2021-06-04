@@ -37,7 +37,7 @@ export default function Login({ setAuth }) {
       console.log(result);
       if (result.accessToken) {
           localStorage.setItem("token", result.accessToken);
-          setAuth(true);
+          setAuth(true, email);
           console.log("login successfully!");
           history.push('/');
       } else {

@@ -12,9 +12,11 @@ import Profile from "./pages/ProfilePage";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [currentUser, setCurrentUser] = useState("");
 
-  const setAuth = (boolean) => {
+  const setAuth = (boolean, username = currentUser) => {
     setIsAuthenticated(boolean);
+    setCurrentUser(username);
   };
 
     return (
@@ -28,7 +30,7 @@ function App() {
                           (<Login {...props} setAuth={setAuth} />) : (<Redirect to="/" />)}/>
               <Route exact path="/landing" component={Landing} />
               <Route exact path="/hangmangame" component={HangmanGame} />
-              <Route exact path="/profile" component={Profile} />
+              <Route exact path="/profile" render={(props) => (<Profile {...props} currentuser={currentUser}/>)} />
               <Route exact path="/buildprofile" render={(props) => (<BuildProfile {...props} setAuth={setAuth}/>)} />
               <Route exact path="/createaccount" render={(props) => (<CreateAccount {...props} setAuth={setAuth}/>)}/>
             </Switch>
