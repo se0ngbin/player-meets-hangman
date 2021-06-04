@@ -13,7 +13,7 @@ import Logo from '../assets/logo.png'
 import { Link, useHistory } from 'react-router-dom';
 
 
-export default function Login({ setAuth }) {
+export default function Login({ setAuth, setUser }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -37,7 +37,8 @@ export default function Login({ setAuth }) {
       console.log(result);
       if (result.accessToken) {
           localStorage.setItem("token", result.accessToken);
-          setAuth(true, email);
+          setUser(email);
+          setAuth(true);
           console.log("login successfully!");
           history.push('/');
       } else {

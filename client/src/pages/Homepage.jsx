@@ -42,6 +42,43 @@ const Homepage = (props) => {
     const [popupShow, setPopupShow] = useState(false);
     const [matchList, setMatchList] = useState({});
     const [matchedUser, setMatchedUser] = useState({});
+    const [selfName, setSelfName] = useState("");
+    const [selfAge, setSelfAge] = useState("");
+    const [selfBio, setSelfBio] = useState("");
+
+    function calculateAge(dateString) {
+        var today = new Date();
+        var birthDate = new Date(dateString);
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    }
+
+    const getSelfData = async () => {
+        let selfDataUrl = "http://localhost:3001/profile/" + props.currentUser;
+        try {
+            const response = await fetch(selfDataUrl, {
+                method: "GET"
+            });
+            if (response.ok) {
+                console.log("user info get successfully");
+                const data = await response.json();
+                console.log(data.name, data.birthdate, data.bio);
+                setSelfName(data.name);
+                setSelfAge(calculateAge(data.birthdate));
+                setSelfBio(data.bio);
+            } else {
+                console.log("didn't work.");
+                console.log(response.status);
+            }
+        } catch (err) {
+            console.error("GET user data", err);
+            return err.status;
+        }
+    }
 
     const fetchMatches = async () => { 
         try {
@@ -89,6 +126,7 @@ const Homepage = (props) => {
     useEffect(() => {
         fetchFeed();
         fetchMatches();
+        getSelfData();
     }, []);
 
     const handleLike = async () => {
@@ -131,36 +169,23 @@ const Homepage = (props) => {
         }*/
     }
 
-    function calculateAge(dateString) {
-        var today = new Date();
-        var birthDate = new Date(dateString);
-        var age = today.getFullYear() - birthDate.getFullYear();
-        var m = today.getMonth() - birthDate.getMonth();
-        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-            age--;
-        }
-        return age;
-    }
-
-    
-
-    function findUser(name) {
-        return userList.find((user) => {
-            return user.userName === name;
-        })
-    }
-
     function logOut() {
         console.log("called");
         props.setAuth(false);
         history.push('/');
     }
+    
+    // function findUser(name) {
+    //     return userList.find((user) => {
+    //         return user.userName === name;
+    //     })
+    // }
 
-    function handleChooseUser(name) {
-        let userObj = findUser(name);
-        setMatchedUser(userObj);
-        setPopupShow(true);
-    }
+    // function handleChooseUser(name) {
+    //     let userObj = findUser(name);
+    //     setMatchedUser(userObj);
+    //     setPopupShow(true);
+    // }
 
 
     const match_notifs = () => {
@@ -246,13 +271,10 @@ const Homepage = (props) => {
                     closeOnDocumentClick
                 >
                     <div className="profilePopup">
-                        {/* <Link to="/profile">
-                            <div className="selfPic">
-                                
-                            </div>
-                        </Link> */}
-                        <div className="selfInfo1">Tickle Radish (18)</div>
-                        <div className="selfInfo2">LA, California</div>
+                        <Link to="/profile">
+                            <div className="selfInfo1">{selfName}, {selfAge}</div>
+                            <div className="selfInfo2">{selfBio}</div>
+                        </Link>
                         <div className="menu2" onClick={logOut}>
                             <div className="menu-item2"><Button variant="link" onClick={logOut}> Log Out </Button></div>
                         </div>
