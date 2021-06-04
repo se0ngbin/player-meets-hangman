@@ -28,6 +28,11 @@ export default function BuildProfile() {
       <div className="Login">
         <Form onSubmit={handleSubmit}>
           <Form.Group size="lg" controlId="age">
+            <Form.Label>Profile Picture</Form.Label>
+            <input type="file" />
+          </Form.Group>
+          
+          <Form.Group size="lg" controlId="age">
             <Form.Label>Age</Form.Label>
             <Form.Control
               autoFocus
