@@ -3,8 +3,10 @@ import createError from 'http-errors';
 import pg from 'pg';
 import fs from 'fs';
 import util from 'util';
+import path from 'path';
 
 import { StatusCodes } from 'http-status-codes';
+import { v4 as uuidv4 } from 'uuid';
 import { connectionString } from '../constants.js';
 
 const pgPool = new pg.Pool({ connectionString });
@@ -250,8 +252,37 @@ export const deleteUserQuestionAnswers = asyncHandler(async (req, res) => {
 
 
 // photos stuff
-// TODO
-//
+
+export const addPhotos = asyncHandler(async (req, res) => {
+    const qstring = '\
+    INSERT INTO "Photo" \
+    (id, userid, path) \
+    values \
+    ($1, $2, $3) \
+    ';
+
+    const userId = res.locals.decoded.userid;
+
+    const getFileData = x => x;
+    const uploadPhoto = (fileData) => {
+        let  uuid = uuidv4();
+        let  photoPath = path.join("photos", uuid);
+
+        fs.writeFileSync(photoPath, fileData);
+
+        return [uuid, userId, photoPath];
+    }
+    
+    await executeArrayQuery(
+        qstring,
+        (req, _res) => req.body.map(getFileData),
+        (_req, _res, fileData) => uploadPhoto(fileData),
+        req,
+        res
+    );
+
+    res.status(200).json();
+});
 
 
 // contact info
