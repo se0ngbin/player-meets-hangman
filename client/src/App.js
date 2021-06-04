@@ -7,6 +7,7 @@ import CreateAccount from "./pages/CreateAccount";
 import HangmanGame from "./pages/Hangman";
 import Landing from "./pages/Landing"
 import BuildProfile from "./pages/BuildProfile"
+import Profile from "./pages/ProfilePage";
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
                           (<Login {...props} setAuth={setAuth} />) : (<Redirect to="/" />)}/>
               <Route exact path="/landing" component={Landing} />
               <Route exact path="/hangmangame" component={HangmanGame} />
+              <Route exact path="/profile" component={Profile} />
               <Route exact path="/buildprofile" render={(props) => (<BuildProfile {...props} setAuth={setAuth}/>)} />
               <Route exact path="/createaccount" render={(props) => (<CreateAccount {...props} setAuth={setAuth}/>)}/>
             </Switch>

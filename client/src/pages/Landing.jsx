@@ -1,12 +1,30 @@
-import React from "react";
+/* code by Vanessa and Naoya*/
+
+import React, { useEffect, useState } from "react";
+import Logo from '../assets/logo.png'
+import BellIcon from '../assets/bell_icon.png';
 import "./Landing.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Popup from 'reactjs-popup';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 
   function Landing() {
     return (
 
         <div>
+        <div className="navbar">
+                <img src={Logo} alt="" height="30" className="logo"></img>
+                <Popup
+                    trigger={
+                        <img src={BellIcon} alt="" height="25" className="bellIcon"></img>
+                    }
+                    position='bottom right'
+                    closeOnDocumentClick
+                >
+
+                </Popup>
+            </div>
             <div className="container content">
                 <div className="row">
                     <div className="col-sm-3 talk">
@@ -29,34 +47,34 @@ import 'bootstrap/dist/css/bootstrap.min.css';
                 </div>
             </div>
 
-            <section className="features-icons bg-light text-center det-ails">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-lg-4">
-                            <div className="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
-                                <div className="features-icons-icon d-flex  icon-bra-ails">
-                                    <i className="icon-screen-desktop m-auto text-primary icon-ails"></i>
+            <section class="features-icons bg-light text-center det-ails">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+                                <div class="features-icons-icon d-flex  icon-bra-ails">
+                                    <i class="icon-screen-desktop m-auto text-primary icon-ails"></i>
                                 </div>
                                 <h5>Many users</h5>
-                                <p className="lead mb-0">Our app has the most users in the dating app industry!</p>
+                                <p class="lead mb-0">Our app has the most users in the dating app industry!</p>
                             </div>
                         </div>
-                        <div className="col-lg-4">
-                            <div className="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
-                                <div className="features-icons-icon d-flex  icon-bra-ails">
-                                    <i className="icon-layers m-auto text-primary icon-ails"></i>
+                        <div class="col-lg-4">
+                            <div class="features-icons-item mx-auto mb-5 mb-lg-0 mb-lg-3">
+                                <div class="features-icons-icon d-flex  icon-bra-ails">
+                                    <i class="icon-layers m-auto text-primary icon-ails"></i>
                                 </div>
                                 <h5>Make or Break Questions</h5>
-                                <p className="lead mb-0">So that you don't need to worry about what to chat about!</p>
+                                <p class="lead mb-0">So that you don't need to worry about what to chat about!</p>
                             </div>
                         </div>
-                        <div className="col-lg-4">
-                            <div className="features-icons-item mx-auto mb-0 mb-lg-3">
-                                <div className="features-icons-icon d-flex  icon-bra-ails">
-                                    <i className="icon-check m-auto text-primary icon-ails"></i>
+                        <div class="col-lg-4">
+                            <div class="features-icons-item mx-auto mb-0 mb-lg-3">
+                                <div class="features-icons-icon d-flex  icon-bra-ails">
+                                    <i class="icon-check m-auto text-primary icon-ails"></i>
                                 </div>
                                 <h5>High dating rate</h5>
-                                <p className="lead mb-0">Many of our matched users have gone on to build a long-term relationship.</p>
+                                <p class="lead mb-0">Many of our matched users have gone on to build a long-term relationship.</p>
                             </div>
                         </div>
                     </div>
@@ -66,27 +84,4 @@ import 'bootstrap/dist/css/bootstrap.min.css';
     );
 }
 
-/*
-const Landing = () => {
-return (
-    <div>
-            <div className="navbar">
-                <img src={Logo} alt="" height="30" className="logo"></img>
-                <Popup
-                    trigger={
-                        <img src={BellIcon} alt="" height="25" className="bellIcon"></img>
-                    }
-                    position='bottom right'
-                    closeOnDocumentClick
-                >
-                    
-                </Popup>
-            </div>
-    <section style={sectionStyle}></section>
-    
-    </div>
-    );
-}
-*/
 export default Landing;
-    

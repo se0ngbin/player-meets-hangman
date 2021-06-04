@@ -224,9 +224,11 @@ const Homepage = ( {setAuth} ) => {
                     closeOnDocumentClick
                 >
                     <div className="profilePopup">
-                        <div className="selfPic">
-                            <img src={Guy} alt="" height="100%"/>
-                        </div>
+                        <Link to="/profile">
+                            <div className="selfPic">
+                                <img src={Guy} alt="" height="100%"/>
+                            </div>
+                        </Link>
                         <div className="selfInfo1">David Holmwood (23)</div>
                         <div className="selfInfo2">San Francisco, California</div>
                         <div className="menu2" onClick={logOut}>
