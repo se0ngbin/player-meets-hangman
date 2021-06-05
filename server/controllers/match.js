@@ -33,6 +33,9 @@ export const addLike = asyncHandler(async (req, res) => {
     const likerId = res.locals.decoded.userid;
     const likeeId = req.body.userid;
 
+    if (likerId === likeeId)
+        throw createError(StatusCodes.BAD_REQUEST, "Cannot like yourself");
+
     await pgPool.query(qstring, [likerId, likeeId]);
 
     let resultToSend = { status: "liked" }
@@ -64,16 +67,16 @@ export const addLike = asyncHandler(async (req, res) => {
 });
 
 export const getMatches = asyncHandler(async (req, res) => {
-    const qstring = '\
-    SELECT m.id as id, l.id as userid, username \
-    FROM "Match" as m \
-    INNER JOIN "LoginInfo" as l on m.userid2 = l.id \
-    WHERE m.userid1 = $1 \
+    let qstring = '\
+    SELECT m1.id as id, l1.id as userid, username \
+    FROM "Match" as m1 \
+    INNER JOIN "LoginInfo" as l1 on m1.userid2 = l1.id \
+    WHERE m1.userid1 = $1 \
     UNION \
-    SELECT m.id as id, l.id as userid, username \
-    FROM "Match" as m \
-    INNER JOIN "LoginInfo" as l on m.userid1 = l.id \
-    WHERE m.userid2 = $1 \
+    SELECT m2.id as id, l2.id as userid, username \
+    FROM "Match" as m2 \
+    INNER JOIN "LoginInfo" as l2 on m2.userid1 = l2.id \
+    WHERE m2.userid2 = $1 \
     ';
 
     const result = await pgPool.query(qstring, [res.locals.decoded.userid]);
@@ -94,7 +97,7 @@ export const getMatch = asyncHandler(async (req, res) => {
     SELECT m.id as id, l.id as userid, username \
     FROM "Match" as m \
     INNER JOIN "LoginInfo" as l on m.userid1 = l.id \
-    WHERE m.id = $1 and m.userid2 = $1 \
+    WHERE m.id = $1 and m.userid2 = $2 \
     ';
 
     const result = await pgPool.query(qstring, [matchId, myId]);
