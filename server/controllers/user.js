@@ -73,8 +73,21 @@ async function getProfile(username) {
     const users_query = {
         name: 'get-users-by-username',
         text: '\
+        SELECT g1.name as owngender, g2.name as genderinterestedinn, "User".id, username, "User".name, birthdate, bio, gender, gendersinterestedin \
+        FROM "LoginInfo" INNER JOIN "User" on "LoginInfo".id = "User".id \
+        INNER JOIN "Gender" as g1 on g1.id = "User".gender\
+        INNER JOIN "Gender" as g2 on g2.id = "User".gendersinterestedin\
+        WHERE username = $1 \
+        ',
+        values: [username]
+    };
+
+    const users_gender_query = {
+        name: 'get-users-by-username',
+        text: '\
         SELECT "User".id, username, name, birthdate, bio, gender, gendersinterestedin \
         FROM "LoginInfo" INNER JOIN "User" on "LoginInfo".id = "User".id \
+        INNER JOIN "Gender" on "Gender".id = "User".gender\
         WHERE username = $1 \
         ',
         values: [username]
