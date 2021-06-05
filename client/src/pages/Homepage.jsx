@@ -20,7 +20,7 @@ import HangmanIcon from '../assets/hangman_game.png';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button'
 
-const userList = require('./userList');
+// const userList = require('./userList');
 
 const feedPhotos = [
     Girl1,
@@ -36,16 +36,16 @@ const feedPhotos = [
 const Homepage = (props) => {
     const history = useHistory();
     const [currIndex, setCurrIndex] = useState(0);
-    const [currProfile, setCurrProfile] = useState(userList[0]);
+    const [currProfile, setCurrProfile] = useState({});
     const [currPhoto, setCurrPhoto] = useState(feedPhotos[0]);
     const [endOfFeed, setEndOfFeed] = useState(false);
     const [popupShow, setPopupShow] = useState(false);
-    var matchList = [];
-    var likeList = [];
-    const [matchedUser, setMatchedUser] = useState({});
+    const [matchList, setMatchList] = useState([]);
+    const [matchedUsers, setMatchedUsers] = useState([]);
     const [selfName, setSelfName] = useState("");
     const [selfAge, setSelfAge] = useState("");
     const [selfBio, setSelfBio] = useState("");
+    const [chosenMatchedUser, setChosenMatchedUser] = useState({});
 
     function calculateAge(dateString) {
         var today = new Date();
@@ -81,27 +81,62 @@ const Homepage = (props) => {
         }
     }
 
-    // TODO: doesn't work for some reason
-    const fetchMatches = async () => { 
+    const getMatchedInfo = async (match) => {
         try {
-        const response = await fetch("http://localhost:3001/matches", {
-            method: "GET",
-            headers: { "Authorization": 'Bearer ' + localStorage.getItem("token") }
-        });
-        if (response.ok) {
-            console.log("matches get successfully");
-            const data = await response.json();
-            console.log(data);
-            matchList = data;
-        } else {
-            console.log("didn't work.");
-            console.log(response.status);
+            const response = await fetch(`http://localhost:3001/profile/${match}`, {
+                method: "GET",
+                headers: { "Authorization": 'Bearer ' + localStorage.getItem("token") }
+            });
+            if (response.ok) {
+                console.log("matched user info get successfully");
+                const data = await response.json();
+                console.log(data);
+                let list = matchedUsers;
+                list.push(data);
+                setMatchedUsers(list);
+            } else {
+                console.log("didn't work.");
+                console.log(response.status);
+            }
+        } catch (err) {
+                console.error("GET matched user info", err);
+                return err.status;
         }
-    } catch (err) {
-        console.error("GET random profile ", err);
-        return err.status;
+
+
+
     }
+
+
+
+    const fetchMatches = async () => { 
+        setMatchedUsers([]);
+        setMatchList([]);
+        try {
+            const response = await fetch("http://localhost:3001/matches", {
+                method: "GET",
+                headers: { "Authorization": 'Bearer ' + localStorage.getItem("token") }
+            });
+            if (response.ok) {
+                console.log("matches get successfully");
+                const data = await response.json();
+                console.log(data);
+                let usernames = [];
+                data.map((match) => 
+                    usernames.push(match.username)
+                );
+                usernames.map((match) => getMatchedInfo(match));
+                setMatchList(usernames);
+            } else {
+                console.log("didn't work.");
+                console.log(response.status);
+            }
+        } catch (err) {
+            console.error("GET matches", err);
+            return err.status;
+        }
     }
+
     
     // TODO: we could try to display all liked users for our search function
     const fetchLikes = async () => { 
@@ -114,7 +149,6 @@ const Homepage = (props) => {
             console.log("likes get successfully");
             const data = await response.json();
             console.log(data);
-            matchList = data;
         } else {
             console.log("didn't work.");
             console.log(response.status);
@@ -135,8 +169,8 @@ const Homepage = (props) => {
                 const data = await response.json();
                 console.log(data);
                 setCurrProfile(data);
-                console.log("matchlist:");
-                console.log(matchList);
+                console.log("matchlist:", matchList);
+                console.log("matchedUsers", matchedUsers);
             } else {
                 console.log("didn't work.");
                 console.log(response.status);
@@ -183,15 +217,6 @@ const Homepage = (props) => {
 
     const handleDislike = () => {
         fetchFeed();
-        /*
-        if(currIndex < 6) {
-            setCurrProfile(userList[currIndex + 1]);
-            setCurrPhoto(feedPhotos[currIndex + 1]);
-            setCurrIndex(currIndex + 1);
-        }
-        else {
-            setEndOfFeed(true);
-        }*/
     }
 
     function logOut() {
@@ -200,23 +225,26 @@ const Homepage = (props) => {
         history.push('/');
     }
 
-
-    const match_notifs = () => {
-        // I give up... TODO: implement match notifications (the matches should be stored in matchList)
-        for (var user in matchList) {
-            console.log(user);
-        }
-        /*
-        <div className="menu-item1" onClick={() => handleChooseUser(match)}>
-            You matched with {match}. See their profile now!
-        </div>
-        */
+    const handleChooseMatch = ( name ) => {
+        matchedUsers.map((user) => {
+            if (user.name === name) {
+                setChosenMatchedUser(user);
+                setPopupShow(true);
+            }
+        })
     }
-    /*
+
+
+    const match_notifs = matchedUsers.map( (match) => 
+        <div className="menu-item1" onClick={() => handleChooseMatch(match.name)}>
+            You matched with {match.name}. See their profile now!
+        </div>
+    )
     
-    // TODO: when we click on a match notification, display a popup with user's contact info
+    
+    // when we click on a match notification, display a popup with user's contact info
     function MatchPopup(props) {
-        var head = props.user.userName;
+        var head = props.user.name;
         const handleOnClick = () => {
             props.onHide(); 
         };
@@ -235,19 +263,16 @@ const Homepage = (props) => {
             </Modal.Header>
             <Modal.Body>
                 <div className="popUpContent">
-                    Age: {props.user.userAge}
+                    Age: {calculateAge(props.user.birthdate)}
                 </div>
                 <div className="popUpContent">
-                    Location: {props.user.userCity}, {props.user.userState}
+                    Bio: {props.user.bio}
                 </div>
                 <div className="popUpContent">
-                    Bio: {props.user.userBio}
+                    Email: {props.user.username}
                 </div>
                 <div className="popUpContent">
-                    Interest: {props.user.userInterest}
-                </div>
-                <div className="popUpContent">
-                    Instagram Account: {props.user.userInstagram}
+                    Contact: {props.user.contact}
                 </div>
             </Modal.Body>
             <Modal.Footer>
@@ -256,7 +281,6 @@ const Homepage = (props) => {
           </Modal>
         );
       }
-*/
     
     return (
         <div>
@@ -326,6 +350,11 @@ const Homepage = (props) => {
                     </div>
                 </Link>
             </div>
+            <MatchPopup
+                show={popupShow}
+                onHide={() => setPopupShow(false)}
+                user={chosenMatchedUser}
+            />
         </div>
     );
 }
