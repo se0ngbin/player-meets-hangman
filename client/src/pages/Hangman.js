@@ -27,7 +27,6 @@ class Hangman extends Component {
     this.state = {
       mistake: 0,
       guessed: new Set(),
-      // TODO: should be info from player, not random word
       answer: randomWord(), 
     };
     this.handleGuess = this.handleGuess.bind(this);
@@ -91,7 +90,6 @@ class Hangman extends Component {
     ));
   }
 
-  // TODO: fix the buttons available to player
   resetButton = () => {
     this.setState({
       mistake: 0,
@@ -108,11 +106,9 @@ class Hangman extends Component {
     const isWinner = this.guessedWord().join("") === answer;
     gameStat = this.generateButtons();
     if (isWinner) {
-      // TODO: notify server of win
       gameStat = "YOU WON";
     }
     if (gameOver) {
-      // TODO: notify server of loss
       gameStat = "YOU LOST";
     }
 

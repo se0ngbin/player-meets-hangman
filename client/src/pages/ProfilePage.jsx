@@ -1,5 +1,3 @@
-/* code by Vanessa */
-
 import React, { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 import Logo from '../assets/logo.png'
@@ -11,39 +9,46 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Popup from 'reactjs-popup';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button'
+import { useAccordionToggle } from "react-bootstrap";
 
 const userList = require('./userList');
 
 const userSelf = {
-    "userName": "David Holmwood",
-    "userAge": "23",
-    "userCity": "San Francisco",
+    "userName": "Tickle Radish",
+    "userAge": "18",
+    "userCity": "LA",
     "userState": "California",
-    "userBio": "Curabitur et sodales ante. Ut vitae tincidunt tellus, et laoreet orci. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
-    "userInterest": "Birdwatching",
-    "userInstagram": "@davidig"
+    "userBio": "student",
+    "userInterest": "I am cool",
+    "userInstagram": "radishes@gmail.com"
 };
 
-const Profile = () => {
+const Profile = ( props ) => {
     const [popupShow, setPopupShow] = useState(false);
     const [matchedUser, setMatchedUser] = useState({});
+    const [userInfo, setUserInfo] = useState({});
+    let url = `http://localhost:3001/profile/${props.currentUser}`
 
-    const fetchFeed = async () => {
-
-        // Trying to GET random profile. Worked before now it doesn't work :(
-        // but GET requests worked when I tried to get "/genders" or "/interests"
+    // TODO: for some reason, this it is not recognizing currentuser as a string but as a object
+    const fetchInfo = async () => {
 
         try {
-            const response = await fetch("http://localhost:3001/profile/random", {
+            const response = await fetch(url, {
                 method: "GET",
+                headers: { "Content-Type": "application/json",
+                            "Authorization": 'Bearer ' + localStorage.getItem("token") },
             });
             if (response.ok) {
                 console.log("profile get successfully");
                 const data = await response.json();
                 console.log(data);
+                setUserInfo(data);
             } else {
                 console.log("didn't work.");
                 console.log(response.status);
+                console.log(props.currentUser)
+                const data = await response.json()
+                console.log(data);
             }
             return response.ok;
         } catch (err) {
@@ -52,44 +57,33 @@ const Profile = () => {
         }
     }
 
+    function calculateAge(dateString) {
+        var today = new Date();
+        var birthDate = new Date(dateString);
+        var age = today.getFullYear() - birthDate.getFullYear();
+        var m = today.getMonth() - birthDate.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+        return age;
+    }
+
     useEffect(() => {
-        fetchFeed();
+        console.log(props.currentUser);
+        fetchInfo();
     }, []);
 
 
-
-    const matches = [
-        "Alexandra",
-        "Bella",
-        "Cassandra",
-        "Dory"
-    ];
-
-    function findUser(name) {
-        return userList.find((user) => {
-            return user.userName === name;
-        })
-    }
-
-    function handleChooseUser(name) {
-        let userObj = findUser(name);
-        setMatchedUser(userObj);
-        setPopupShow(true);
-    }
-
-
-    const match_notifs = matches.map( (match, index) =>
-        <div className="menu-item1" onClick={() => handleChooseUser(match)}>
-            You matched with {match}. See their profile now!
-        </div>
-    );
-
+    // const match_notifs = matches.map( (match, index) =>
+    //     <div className="menu-item1" onClick={() => handleChooseUser(match)}>
+    //         You matched with {match}. See their profile now!
+    //     </div>
+    // );
     function MatchPopup(props) {
         var head = props.user.userName;
         const handleOnClick = () => {
             props.onHide(); 
         };
-
         return (
           <Modal
             {...props}
@@ -107,16 +101,10 @@ const Profile = () => {
                     Age: {props.user.userAge}
                 </div>
                 <div className="popUpContent">
-                    Location: {props.user.userCity}, {props.user.userState}
-                </div>
-                <div className="popUpContent">
                     Bio: {props.user.userBio}
                 </div>
                 <div className="popUpContent">
-                    Interest: {props.user.userInterest}
-                </div>
-                <div className="popUpContent">
-                    Instagram Account: {props.user.userInstagram}
+                    Email Address: {props.user.userInstagram}
                 </div>
             </Modal.Body>
             <Modal.Footer>
@@ -126,11 +114,12 @@ const Profile = () => {
         );
       }
 
-
     return (
         <div>
             <div className="navbar">
-                <img src={Logo} alt="" height="30" className="logo"></img>
+                <Link to="/">
+                    <img src={Logo} alt="" height="30" className="logo"></img>
+                </Link>
                 <Popup
                     trigger={
                         <img src={BellIcon} alt="" height="25" className="bellIcon"></img>
@@ -141,7 +130,7 @@ const Profile = () => {
                     <div className="notification">
                         <div className="notifTitle">Notifications</div>
                         <div className="menu1">
-                            {match_notifs}
+                            {/* {match_notifs} */}
                         </div>
                         <div className="noMoreText">No more notifications</div>
                     </div>
@@ -154,11 +143,8 @@ const Profile = () => {
                     closeOnDocumentClick
                 >
                     <div className="profilePopup">
-                        <div className="selfPic">
-                            <img src={Guy} alt="" height="100%"/>
-                        </div>
-                        <div className="selfInfo1">David Holmwood (23)</div>
-                        <div className="selfInfo2">San Francisco, California</div>
+                        <div className="selfInfo1">{userInfo.name}, {calculateAge(userInfo.birthdate)}</div>
+                        <div className="selfInfo2">{userInfo.bio}</div>
                         <div className="menu2">
                             <Link to="/login"><div className="menu-item2">Log Out</div></Link>
                         </div>
@@ -168,25 +154,24 @@ const Profile = () => {
             </div>
             <div className="body2">
                 <div className="selfPic">
-                    <img src={Guy} alt="" height="100%"/>
                 </div>
                 <div className="popUpContent">  
-                    Name: {userSelf.userName}
+                    Name: {userInfo.name}
                 </div>
                 <div className="popUpContent">  
-                    Age: {userSelf.userAge}
+                    Age: {calculateAge(userInfo.birthdate)}
                 </div>
                 <div className="popUpContent">
-                    Location: {userSelf.userCity}, {userSelf.uerState}
+                    Gender: {userInfo.gender}
                 </div>
                 <div className="popUpContent">
-                    Bio: {userSelf.userBio}
+                    Bio: {userInfo.bio}
                 </div>
                 <div className="popUpContent">
-                    Interest: {userSelf.userInterest}
+                    Email: {userInfo.username}
                 </div>
                 <div className="popUpContent">
-                    Instagram Account: {userSelf.userInstagram}
+                    Interests: {userInfo.interests}
                 </div>
             </div>
             <MatchPopup

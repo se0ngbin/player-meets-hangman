@@ -79,6 +79,7 @@ async function getProfile(username) {
         ',
         values: [username]
     };
+    
     const users_result = await pgPool.query(users_query);
     if (users_result.rowCount == 0) 
         throw createError(StatusCodes.NOT_FOUND, `User "${username}" does not exist`);
@@ -99,31 +100,31 @@ async function getProfile(username) {
 
     user.interests = interests_result.rows;
 
-    const questions_answers_query = {
-        name: 'get-user-questions-answers-responded',
-        text: '\
-        SELECT ua.mobqid, mobqpaid, q.text as qtext, a.text as atext \
-        FROM "MakeOrBreakUserAnswer" as ua \
-        INNER JOIN "User" as u on u.id = ua.userid \
-        INNER JOIN "MakeOrBreakQuestion" as q on q.id = ua.mobqid \
-        INNER JOIN "MakeOrBreakPossibleAnswer" as a on a.id = ua.mobqpaid \
-        WHERE u.id = $1 \
-        ',
-        values: [user.id]
-    }
-    const questions_result = await pgPool.query(questions_answers_query);
+    // const questions_answers_query = {
+    //     name: 'get-user-questions-answers-responded',
+    //     text: '\
+    //     SELECT ua.mobqid, mobqpaid, q.text as qtext, a.text as atext \
+    //     FROM "MakeOrBreakUserAnswer" as ua \
+    //     INNER JOIN "User" as u on u.id = ua.userid \
+    //     INNER JOIN "MakeOrBreakQuestion" as q on q.id = ua.mobqid \
+    //     INNER JOIN "MakeOrBreakPossibleAnswer" as a on a.id = ua.mobpaid \
+    //     WHERE u.id = $1 \
+    //     ',
+    //     values: [user.id]
+    // }
+    // const questions_result = await pgPool.query(questions_answers_query);
 
-    const grouped_question_answers = questions_result.rows.reduce((acc, row) => {
-        if (! acc.hasOwnProperty(row.mobqid)) {
-            acc[row.mobqid] = { id: row.mobqid, text: row.qtext, answers: [] };
-        }
+    // const grouped_question_answers = questions_result.rows.reduce((acc, row) => {
+    //     if (! acc.hasOwnProperty(row.mobqid)) {
+    //         acc[row.mobqid] = { id: row.mobqid, text: row.qtext, answers: [] };
+    //     }
 
-        acc[row.mobqid].answers.push({ id: row.mobqpaid, text: row.atext });
-        return acc;
-    }, {});
+    //     acc[row.mobqid].answers.push({ id: row.mobqpaid, text: row.atext });
+    //     return acc;
+    // }, {});
 
-    user.questions_answers = grouped_question_answers;
-    user.photos = await getPhotos(user.id);
+    // user.questions_answers = grouped_question_answers;
+    // user.photos = await getPhotos(user.id);
 
     return user;
 }
@@ -142,7 +143,20 @@ export const getRandomUserProfile = asyncHandler(async (_req, res) => {
         throw createError(StatusCodes.NOT_FOUND, "No users in the database");
 
     res.status(StatusCodes.OK).json(await getProfile(result.rows[0].username));
+    // res.status(StatusCodes.OK).json(result.rows[0].username);
 });
+
+
+// async function getLogin(username) {
+//     const query = {
+//         name: 'get-login-by-username',
+//         text: 'SELECT * from "LoginInfo" WHERE username = $1',
+//         values: [username]
+//     };
+
+//     let user = await pgPool.query(query);
+//     return user.rowCount == 1 ? user.rows[0] : null;
+// }
 
 
 // protected functions

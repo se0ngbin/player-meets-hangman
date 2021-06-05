@@ -11,11 +11,14 @@ import Profile from "./pages/ProfilePage";
 
 
 function App() {
+  // const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [currentUser, setCurrentUser] = useState("");
 
-  const setAuth = (boolean) => {
-    setIsAuthenticated(boolean);
-  };
+  // const setAuth = (boolean, username) => {
+  //   setIsAuthenticated(boolean);
+  //   setCurrentUser(username);
+  // }
 
     return (
       <div className="App">
@@ -23,14 +26,14 @@ function App() {
           <Router>
             <Switch>
               <Route exact path="/" render={(props) => isAuthenticated ? 
-                          (<Homepage {...props} setAuth={setAuth} />) : (<Redirect to="/landing" />)}/>
+                          (<Homepage {...props} setAuth={setIsAuthenticated} currentUser={currentUser} />) : (<Redirect to="/landing" />)}/>
               <Route exact path="/login" render={(props) => !isAuthenticated ? 
-                          (<Login {...props} setAuth={setAuth} />) : (<Redirect to="/" />)}/>
+                          (<Login {...props} setAuth={setIsAuthenticated} setUser={setCurrentUser} />) : (<Redirect to="/" />)}/>
               <Route exact path="/landing" component={Landing} />
               <Route exact path="/hangmangame" component={HangmanGame} />
-              <Route exact path="/profile" component={Profile} />
-              <Route exact path="/buildprofile" render={(props) => (<BuildProfile {...props} setAuth={setAuth}/>)} />
-              <Route exact path="/createaccount" render={(props) => (<CreateAccount {...props} setAuth={setAuth}/>)}/>
+              <Route exact path="/profile" render={() => (<Profile currentUser={currentUser}/>)} />
+              <Route exact path="/buildprofile" render={(props) => (<BuildProfile {...props} setAuth={setIsAuthenticated}/>)} />
+              <Route exact path="/createaccount" render={(props) => (<CreateAccount {...props} setAuth={setIsAuthenticated}/>)}/>
             </Switch>
           </Router>
         </Fragment>

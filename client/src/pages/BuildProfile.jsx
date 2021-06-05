@@ -15,19 +15,17 @@ export default function BuildProfile({setAuth}) {
   const [bio, setBio] = useState("");
   const [genderPref, setGenderPref] = useState("");
   const [funFact, setFunFact] = useState("");
-  // TODO: city, funfact not dealt with
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // TODO: fix gender
       const body = { name: flname, birthdate: age, bio: bio, gender: '1', 
-        gendersinterestedin: '01'};
+        gendersinterestedin: '012'};
       const response = await fetch("http://localhost:3001/user", {
         method: "PUT",
         headers: { "Content-Type": "application/json",
                     "Authorization": 'Bearer ' + localStorage.getItem("token") },
-        body: JSON.stringify(body),
+        body: JSON.stringify(body)
       });
       if (response.ok) {
         console.log("profile built successfully"); 
@@ -53,8 +51,8 @@ export default function BuildProfile({setAuth}) {
       </div>
       <div className="Login">
         <Form onSubmit={handleSubmit}>
-          <Form.Group size="lg" controlId="age">
-            <Form.Label>Profile Picture</Form.Label>
+          <Form.Group size="lg" controlId="pic">
+            <Form.File id="pic" label="Profile Picture" />
             <input type="file" />
           </Form.Group>
           <Form.Group size="lg" controlId="flname">
