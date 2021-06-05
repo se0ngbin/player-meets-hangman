@@ -15,7 +15,7 @@ import jwt_decode from "jwt-decode";
 
 
 
-export default function Login({ setAuth }) {
+export default function Login({ setAuth, setUser }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -39,9 +39,11 @@ export default function Login({ setAuth }) {
       console.log(result);
       if (result.accessToken) {
           localStorage.setItem("token", result.accessToken);
+        
           const decoded = jwt_decode(result.accessToken);
           localStorage.setItem("username", decoded.username);
           setAuth(true, email);
+
           console.log("login successfully!");
           history.push('/');
       } else {
