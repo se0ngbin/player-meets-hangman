@@ -64,8 +64,6 @@ export const addLike = asyncHandler(async (req, res) => {
 });
 
 export const getMatches = asyncHandler(async (req, res) => {
-    const myId = res.locals.decoded.userid;
-
     const qstring = '\
     SELECT m.id as id, l.id as userid, username \
     FROM "Match" as m \
@@ -78,7 +76,7 @@ export const getMatches = asyncHandler(async (req, res) => {
     WHERE m.userid2 = $1 \
     ';
 
-    const result = await pgPool.query(qstring, [myId]);
+    const result = await pgPool.query(qstring, [res.locals.decoded.userid]);
 
     res.status(200).json(result.rows);
 });

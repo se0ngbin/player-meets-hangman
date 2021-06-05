@@ -12,15 +12,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
         <div>
         <div className="navbar">
                 <img src={Logo} alt="" height="30" className="logo"></img>
-                <Popup
-                    trigger={
-                        <img src={BellIcon} alt="" height="25" className="bellIcon"></img>
-                    }
-                    position='bottom right'
-                    closeOnDocumentClick
-                >
-                    
-                </Popup>
             </div>
             <div className="container content">
                 <div className="row">
