@@ -29,7 +29,6 @@ const Profile = ( props ) => {
     const [userInfo, setUserInfo] = useState({});
     let url = `http://localhost:3001/profile/${props.currentUser}`
 
-    // TODO: for some reason, this it is not recognizing currentuser as a string but as a object
     const fetchInfo = async () => {
 
         try {
@@ -52,7 +51,7 @@ const Profile = ( props ) => {
             }
             return response.ok;
         } catch (err) {
-            console.error("GET random profile ", err);
+            console.error("GET profile ", err);
             return err.status;
         }
     }
@@ -160,9 +159,6 @@ const Profile = ( props ) => {
                 </div>
                 <div className="popUpContent">  
                     Age: {calculateAge(userInfo.birthdate)}
-                </div>
-                <div className="popUpContent">
-                    Gender: {userInfo.gender}
                 </div>
                 <div className="popUpContent">
                     Bio: {userInfo.bio}
