@@ -11,6 +11,8 @@ import Button from "react-bootstrap/Button";
 import "./Login.css";
 import Logo from '../assets/logo.png'
 import { Link, useHistory } from 'react-router-dom';
+import jwt_decode from "jwt-decode";
+
 
 
 export default function Login({ setAuth }) {
@@ -37,6 +39,8 @@ export default function Login({ setAuth }) {
       console.log(result);
       if (result.accessToken) {
           localStorage.setItem("token", result.accessToken);
+          const decoded = jwt_decode(result.accessToken);
+          localStorage.setItem("username", decoded.username);
           setAuth(true, email);
           console.log("login successfully!");
           history.push('/');

@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import "./Login.css";
 import Logo from '../assets/logo.png';
 import { Link, useHistory } from 'react-router-dom';
+import jwt_decode from "jwt-decode";
 
 const CreateAccount = ({setAuth} ) => {
   const [email, setEmail] = useState("");
@@ -29,6 +30,8 @@ const CreateAccount = ({setAuth} ) => {
       console.log(result);
       if (result.accessToken) {
         localStorage.setItem("token", result.accessToken);
+        const decoded = jwt_decode(result.accessToken);
+        localStorage.setItem("username", decoded.username);
         console.log("account created successfully"); 
         setAuth(true, email);
         history.push('/buildprofile');

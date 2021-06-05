@@ -12,21 +12,22 @@ import Button from 'react-bootstrap/Button'
 
 const userList = require('./userList');
 
-const userSelf = {
-    "userName": "Tickle Radish",
-    "userAge": "18",
-    "userCity": "LA",
-    "userState": "California",
-    "userBio": "student",
-    "userInterest": "I am cool",
-    "userInstagram": "radishes@gmail.com"
-};
+// const userSelf = {
+//     "userName": "Tickle Radish",
+//     "userAge": "18",
+//     "userCity": "LA",
+//     "userState": "California",
+//     "userBio": "student",
+//     "userInterest": "I am cool",
+//     "userInstagram": "radishes@gmail.com"
+// };
 
 const Profile = (currentuser) => {
     const [popupShow, setPopupShow] = useState(false);
     const [matchedUser, setMatchedUser] = useState({});
     const [currProfile, setCurrProfile] = useState(userList[0]);
-    let url = `http://localhost:3001/profile/${currentuser}`
+    console.log('current user', currProfile)
+    let url = `http://localhost:3001/profile/${localStorage.getItem("username")}`
 
     // TODO: for some reason, this it is not recognizing currentuser as a string but as a object
     const fetchFeed = async () => {
@@ -170,22 +171,22 @@ const Profile = (currentuser) => {
                 <div className="selfPic">
                 </div>
                 <div className="popUpContent">  
-                    Name: {userSelf.userName}
+                    Name: {currProfile.name}
                 </div>
                 <div className="popUpContent">  
-                    Age: {userSelf.userAge}
+                    Age: {currProfile.birthdate}
                 </div>
                 <div className="popUpContent">
-                    Location: {userSelf.userCity}, {userSelf.uerState}
+                    Location: USA
                 </div>
                 <div className="popUpContent">
-                    Bio: {userSelf.userBio}
+                    Bio: {currProfile.bio}
                 </div>
                 <div className="popUpContent">
-                    Fun Fact: {userSelf.userInterest}
+                    Fun Fact: {currProfile.genderinterestedinn}
                 </div>
                 <div className="popUpContent">
-                    Instagram Account: {userSelf.userInstagram}
+                    Instagram Account: {currProfile.username}
                 </div>
             </div>
             <MatchPopup
