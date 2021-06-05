@@ -88,7 +88,7 @@ const Homepage = (props) => {
                           "Authorization": 'Bearer ' + localStorage.getItem("token") }
         });
         if (response.ok) {
-            console.log("profile get successfully");
+            console.log("matches get successfully");
             const data = await response.json();
             console.log(data);
             setMatchList(data);
@@ -97,7 +97,7 @@ const Homepage = (props) => {
             console.log(response.status);
         }
     } catch (err) {
-        console.error("GET random profile ", err);
+        console.error("GET matches ", err);
         return err.status;
     }
     }
