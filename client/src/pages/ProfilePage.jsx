@@ -4,7 +4,6 @@ import Logo from '../assets/logo.png'
 import BellIcon from '../assets/bell_icon.png';
 import UserIcon from '../assets/user_icon.png';
 import "./Homepage.css"
-import Guy from '../assets/guy.jpeg';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Popup from 'reactjs-popup';
 import Modal from 'react-bootstrap/Modal';
@@ -43,7 +42,7 @@ const Profile = ( props ) => {
                 console.log("profile get successfully");
                 const data = await response.json();
                 console.log(data);
-                setUserInfo(data);
+                setCurrProfile(data);
             } else {
                 console.log("didn't work.");
                 console.log(response.status);
@@ -144,8 +143,8 @@ const Profile = ( props ) => {
                     closeOnDocumentClick
                 >
                     <div className="profilePopup">
-                        <div className="selfInfo1">{userInfo.name}, {calculateAge(userInfo.birthdate)}</div>
-                        <div className="selfInfo2">{userInfo.bio}</div>
+                        <div className="selfInfo1">{currProfile.name}, {calculateAge(currProfile.birthdate)}</div>
+                        <div className="selfInfo2">{currProfile.bio}</div>
                         <div className="menu2">
                             <Link to="/login"><div className="menu-item2">Log Out</div></Link>
                         </div>
