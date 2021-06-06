@@ -166,9 +166,6 @@ const Profile = ( props ) => {
                 <div className="popUpContent">
                     Email: {userInfo.username}
                 </div>
-                <div className="popUpContent">
-                    Interests: {userInfo.interests}
-                </div>
             </div>
             <MatchPopup
                 show={popupShow}
