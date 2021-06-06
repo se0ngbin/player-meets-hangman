@@ -8,4 +8,3 @@ insert into public."LoginInfo" (id, username, passwordhash) values ('2be0f000-c8
 insert into public."LoginInfo" (id, username, passwordhash) values ('84b764a3-4757-4cc7-9efc-5a174f3c917c', 'aciobutaro7@berkeley.edu', 'nZYCaR');
 insert into public."LoginInfo" (id, username, passwordhash) values ('2cab8e1c-1e31-4f71-aae1-dd01a9021166', 'ryakovlev8@princeton.edu', 'X3hYB0lUrDvU');
 insert into public."LoginInfo" (id, username, passwordhash) values ('fc355ea8-0619-4642-973c-2c5411af5f56', 'aielden9@gnu.org', '29csd6Kyh');
-insert into public."LoginInfo" (id, username, passwordhash) values ('ff07a7a4-fba0-486a-93bd-1ab81bdea442', 'vanessatu@g.ucla.edu', '88888888');
