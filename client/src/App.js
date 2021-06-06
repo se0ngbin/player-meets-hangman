@@ -31,7 +31,8 @@ function App() {
                           (<Login {...props} setAuth={setIsAuthenticated} setUser={setCurrentUser} />) : (<Redirect to="/" />)}/>
               <Route exact path="/landing" component={Landing} />
               <Route exact path="/hangmangame" component={HangmanGame} />
-              <Route exact path="/profile" render={() => (<Profile currentUser={currentUser}/>)} />
+              <Route exact path="/profile" render={() => isAuthenticated ? 
+                          (<Profile currentUser={currentUser}/>) : (<Redirect to="/landing" />)}/>
               <Route exact path="/buildprofile" render={(props) => (<BuildProfile {...props} setAuth={setIsAuthenticated}/>)} />
               <Route exact path="/createaccount" render={(props) => (<CreateAccount {...props} setAuth={setIsAuthenticated}/>)}/>
             </Switch>

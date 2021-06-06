@@ -13,23 +13,24 @@ import { useAccordionToggle } from "react-bootstrap";
 
 const userList = require('./userList');
 
-const userSelf = {
-    "userName": "Tickle Radish",
-    "userAge": "18",
-    "userCity": "LA",
-    "userState": "California",
-    "userBio": "student",
-    "userInterest": "I am cool",
-    "userInstagram": "radishes@gmail.com"
-};
+// const userSelf = {
+//     "userName": "Tickle Radish",
+//     "userAge": "18",
+//     "userCity": "LA",
+//     "userState": "California",
+//     "userBio": "student",
+//     "userInterest": "I am cool",
+//     "userInstagram": "radishes@gmail.com"
+// };
 
 const Profile = ( props ) => {
     const [popupShow, setPopupShow] = useState(false);
     const [matchedUser, setMatchedUser] = useState({});
-    const [userInfo, setUserInfo] = useState({});
-    let url = `http://localhost:3001/profile/${props.currentUser}`
 
-    // TODO: for some reason, this it is not recognizing currentuser as a string but as a object
+    const [currProfile, setCurrProfile] = useState(userList[0]);
+    console.log('current user', currProfile)
+    let url = `http://localhost:3001/profile/${localStorage.getItem("username")}`
+
     const fetchInfo = async () => {
 
         try {
@@ -52,7 +53,7 @@ const Profile = ( props ) => {
             }
             return response.ok;
         } catch (err) {
-            console.error("GET random profile ", err);
+            console.error("GET profile ", err);
             return err.status;
         }
     }
@@ -156,22 +157,22 @@ const Profile = ( props ) => {
                 <div className="selfPic">
                 </div>
                 <div className="popUpContent">  
-                    Name: {userInfo.name}
+                    Name: {currProfile.name}
                 </div>
                 <div className="popUpContent">  
-                    Age: {calculateAge(userInfo.birthdate)}
+                    Age: {currProfile.birthdate}
                 </div>
                 <div className="popUpContent">
-                    Gender: {userInfo.gender}
+                    Location: USA
                 </div>
                 <div className="popUpContent">
-                    Bio: {userInfo.bio}
+                    Bio: {currProfile.bio}
                 </div>
                 <div className="popUpContent">
-                    Email: {userInfo.username}
+                    Fun Fact: {currProfile.genderinterestedinn}
                 </div>
                 <div className="popUpContent">
-                    Interests: {userInfo.interests}
+                    Instagram Account: {currProfile.username}
                 </div>
             </div>
             <MatchPopup
