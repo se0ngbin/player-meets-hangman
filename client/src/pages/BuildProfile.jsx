@@ -10,17 +10,17 @@ export default function BuildProfile({setAuth}) {
   const history = useHistory();
   const [flname, setName] = useState("");
   const [age, setAge] = useState("");
-  const [gender, setGender] = useState("");
+  const [gender, setGender] = useState("1");
   const [city, setCity] = useState("");
   const [bio, setBio] = useState("");
-  const [genderPref, setGenderPref] = useState("");
+  const [genderPref, setGenderPref] = useState("2");
   const [funFact, setFunFact] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const body = { name: flname, birthdate: age, bio: bio, gender: '1', 
-        gendersinterestedin: '012'};
+      const body = { name: flname, birthdate: age, bio: bio, gender: gender, 
+        gendersinterestedin: genderPref};
       const response = await fetch("http://localhost:3001/user", {
         method: "PUT",
         headers: { "Content-Type": "application/json",
@@ -78,12 +78,12 @@ export default function BuildProfile({setAuth}) {
               value={gender}
               onChange={(e) => setGender(e.target.value)}
             >
-              <option>Male</option>
-              <option>Female</option>
-              <option>M2F Transsexual</option>
-              <option>F2M Transsexual</option>
-              <option>Non-binary</option>
-              <option>Not applicable</option>
+              <option value="0">Male</option>
+              <option value="1">Female</option>
+              <option value="2">M2F Transsexual</option>
+              <option value="3">F2M Transsexual</option>
+              <option value="4">Non-binary</option>
+              <option value="5">Not applicable</option>
             </Form.Control>
           </Form.Group>
           <Form.Group size="lg" controlId="city">
@@ -104,8 +104,8 @@ export default function BuildProfile({setAuth}) {
             <Form.Label>Which genders are you interested in?</Form.Label>
             <Form.Control 
               as="select" multiple
-              value={genderPref}
-              onChange={(e) => setGenderPref(e.target.selectedOptions)}
+              value="Male"
+              onChange={(e) => setGenderPref("1")}
             >
               <option>Male</option>
               <option>Female</option>
