@@ -169,6 +169,7 @@ const Homepage = (props) => {
                 const data = await response.json();
                 console.log(data);
                 setCurrProfile(data);
+                console.log(currProfile.id);
                 console.log("matchlist:", matchList);
                 console.log("matchedUsers", matchedUsers);
             } else {
@@ -211,7 +212,7 @@ const Homepage = (props) => {
             console.error("like", err);
             return err.status;
         }
-
+        fetchFeed();
         setCurrPhoto(feedPhotos[currIndex + 1]);
     }
 
@@ -270,9 +271,6 @@ const Homepage = (props) => {
                 </div>
                 <div className="popUpContent">
                     Email: {props.user.username}
-                </div>
-                <div className="popUpContent">
-                    Contact: {props.user.contact}
                 </div>
             </Modal.Body>
             <Modal.Footer>
